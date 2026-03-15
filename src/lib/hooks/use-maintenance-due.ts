@@ -166,11 +166,27 @@ export function computeNextMaintenance(
   records: MaintenanceRecord[],
   sessions: GeneratorSession[]
 ): NextMaintenanceCardInfo | null {
-  if (templates.length === 0) return null
+  const all = computeAllUpcomingMaintenance(templates, records, sessions)
+  return all[0] ?? null
+}
+
+export interface UpcomingMaintenanceItem extends NextMaintenanceCardInfo {
+  generatorId: string
+}
+
+/**
+ * Compute upcoming maintenance for all templates, sorted by urgency then proximity.
+ */
+export function computeAllUpcomingMaintenance(
+  templates: MaintenanceTemplate[],
+  records: MaintenanceRecord[],
+  sessions: GeneratorSession[]
+): UpcomingMaintenanceItem[] {
+  if (templates.length === 0) return []
 
   const now = new Date().toISOString()
 
-  interface Candidate extends NextMaintenanceCardInfo {
+  interface Candidate extends UpcomingMaintenanceItem {
     sortValue: number
   }
 
@@ -181,6 +197,7 @@ export function computeNextMaintenance(
     if (template.isOneTime && lastRecord)
       return {
         templateId: template.id,
+        generatorId: template.generatorId,
         taskName: template.taskName,
         urgency: 'ok' as const,
         sortValue: Infinity,
@@ -188,10 +205,13 @@ export function computeNextMaintenance(
         daysRemaining: null
       }
 
+    const genSessions = sessions.filter(
+      s => s.generatorId === template.generatorId
+    )
     const { hoursRemaining, daysRemaining } = computeRemaining(
       template,
       lastPerformedAt,
-      sessions,
+      genSessions,
       now
     )
 
@@ -208,6 +228,7 @@ export function computeNextMaintenance(
 
     return {
       templateId: template.id,
+      generatorId: template.generatorId,
       taskName: template.taskName,
       urgency,
       sortValue,
@@ -223,12 +244,5 @@ export function computeNextMaintenance(
     return a.sortValue - b.sortValue
   })
 
-  const best = candidates[0]
-  return {
-    templateId: best.templateId,
-    taskName: best.taskName,
-    urgency: best.urgency,
-    hoursRemaining: best.hoursRemaining,
-    daysRemaining: best.daysRemaining
-  }
+  return candidates.map(({ sortValue: _, ...item }) => item)
 }

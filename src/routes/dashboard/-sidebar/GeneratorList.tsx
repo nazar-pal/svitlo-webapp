@@ -2,7 +2,11 @@ import { Button, Card } from '@heroui/react'
 import { Link, useNavigate, useSearch } from '@tanstack/react-router'
 import { Plus, Zap } from 'lucide-react'
 
-import { getGeneratorsByOrg } from '@/data/client/queries/generators'
+import {
+  getAllGeneratorSessions,
+  getGeneratorsByOrg
+} from '@/data/client/queries/generators'
+import { computeGeneratorStatus } from '@/lib/hooks/use-generator-status'
 import { useDrizzleQuery } from '@/lib/hooks/use-drizzle-query'
 import CreateGeneratorModal from './CreateGeneratorModal'
 
@@ -24,6 +28,9 @@ export default function GeneratorList({
 
   const { data: generators } = useDrizzleQuery(
     organizationId ? getGeneratorsByOrg(organizationId) : undefined
+  )
+  const { data: allSessions } = useDrizzleQuery(
+    organizationId ? getAllGeneratorSessions() : undefined
   )
 
   if (!organizationId) return null
@@ -49,31 +56,44 @@ export default function GeneratorList({
       </div>
 
       <div className="flex flex-col gap-1.5">
-        {generators.map(gen => (
-          <Link
-            key={gen.id}
-            to="/dashboard/$organizationId/generators/$generatorId"
-            params={{ organizationId, generatorId: gen.id }}
-            onClick={onNavigate}
-            className="no-underline"
-          >
-            <Card className="border-default-200 hover:border-default-400 border transition-colors">
-              <Card.Content className="flex items-center gap-3 px-3 py-2.5">
-                <div className="bg-default-100 flex shrink-0 items-center justify-center rounded-md p-1.5">
-                  <Zap size={14} className="text-default-600" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-foreground m-0 truncate text-sm font-medium">
-                    {gen.title}
-                  </p>
-                  <p className="text-default-400 m-0 truncate text-xs">
-                    {gen.model}
-                  </p>
-                </div>
-              </Card.Content>
-            </Card>
-          </Link>
-        ))}
+        {generators.map(gen => {
+          const status = computeGeneratorStatus(
+            gen,
+            allSessions.filter(s => s.generatorId === gen.id)
+          ).status
+          return (
+            <Link
+              key={gen.id}
+              to="/dashboard/$organizationId/generators/$generatorId"
+              params={{ organizationId, generatorId: gen.id }}
+              onClick={onNavigate}
+              className="no-underline"
+            >
+              <Card className="border-default-200 hover:border-default-400 border transition-colors">
+                <Card.Content className="flex items-center gap-3 px-3 py-2.5">
+                  <div className="bg-default-100 flex shrink-0 items-center justify-center rounded-md p-1.5">
+                    <Zap size={14} className="text-default-600" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-foreground m-0 truncate text-sm font-medium">
+                      {gen.title}
+                    </p>
+                    <p className="text-default-400 m-0 truncate text-xs">
+                      {gen.model}
+                    </p>
+                  </div>
+                  {status !== 'available' && (
+                    <span
+                      className={`ml-auto size-2 shrink-0 rounded-full ${
+                        status === 'running' ? 'bg-accent' : 'bg-warning'
+                      }`}
+                    />
+                  )}
+                </Card.Content>
+              </Card>
+            </Link>
+          )
+        })}
       </div>
 
       <CreateGeneratorModal

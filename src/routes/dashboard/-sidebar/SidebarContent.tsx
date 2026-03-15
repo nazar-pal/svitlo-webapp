@@ -1,6 +1,6 @@
 import { Button, Separator } from '@heroui/react'
 import { Link, useParams } from '@tanstack/react-router'
-import { LogOut, Settings } from 'lucide-react'
+import { LayoutDashboard, LogOut, Settings } from 'lucide-react'
 
 import { user as userTable } from '@/data/client/db-schema'
 import { getInvitationsByEmail } from '@/data/client/queries/organizations'
@@ -48,6 +48,44 @@ export default function SidebarContent({ onNavigate }: SidebarContentProps) {
         onNavigate={onNavigate}
       />
 
+      {organizationId && (
+        <div className="flex flex-col gap-0.5 px-2 py-2">
+          <Link
+            to="/dashboard/$organizationId"
+            params={{ organizationId }}
+            onClick={onNavigate}
+            activeOptions={{ exact: true }}
+            activeProps={{
+              className:
+                'bg-default-100 text-foreground flex items-center gap-2 rounded-lg px-2 py-2 text-sm no-underline transition-colors'
+            }}
+            inactiveProps={{
+              className:
+                'text-muted hover:text-foreground flex items-center gap-2 rounded-lg px-2 py-2 text-sm no-underline transition-colors'
+            }}
+          >
+            <LayoutDashboard size={14} />
+            Dashboard
+          </Link>
+          <Link
+            to="/dashboard/$organizationId/settings"
+            params={{ organizationId }}
+            onClick={onNavigate}
+            activeProps={{
+              className:
+                'bg-default-100 text-foreground flex items-center gap-2 rounded-lg px-2 py-2 text-sm no-underline transition-colors'
+            }}
+            inactiveProps={{
+              className:
+                'text-muted hover:text-foreground flex items-center gap-2 rounded-lg px-2 py-2 text-sm no-underline transition-colors'
+            }}
+          >
+            <Settings size={14} />
+            Settings
+          </Link>
+        </div>
+      )}
+
       <GeneratorList
         organizationId={organizationId}
         userId={userId}
@@ -70,20 +108,6 @@ export default function SidebarContent({ onNavigate }: SidebarContentProps) {
       <SyncStatusIndicator />
 
       <Separator />
-
-      {organizationId && (
-        <div className="px-2 py-1">
-          <Link
-            to="/dashboard/$organizationId/settings"
-            params={{ organizationId }}
-            onClick={onNavigate}
-            className="text-muted hover:text-foreground flex items-center gap-2 rounded-lg px-2 py-2 text-sm no-underline transition-colors"
-          >
-            <Settings size={14} />
-            Settings
-          </Link>
-        </div>
-      )}
 
       {user && (
         <UserProfile
