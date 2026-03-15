@@ -16,12 +16,7 @@ import { useState } from 'react'
 
 import type { MaintenanceTemplate } from '@/data/client/db-schema/maintenance'
 import { recordMaintenance } from '@/data/client/mutations/maintenance'
-
-function nowLocal(): string {
-  const d = new Date()
-  d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
-  return d.toISOString().slice(0, 16)
-}
+import { nowLocal } from '@/lib/time'
 
 interface RecordMaintenanceModalProps {
   isOpen: boolean

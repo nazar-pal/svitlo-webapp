@@ -1,6 +1,4 @@
 import {
-  AlertDialog,
-  Avatar,
   Button,
   Card,
   Chip,
@@ -9,9 +7,11 @@ import {
   Select,
   Separator
 } from '@heroui/react'
-import { Trash2, UserPlus } from 'lucide-react'
+import { UserPlus } from 'lucide-react'
 import { useState } from 'react'
 
+import ConfirmDialog from '@/components/ConfirmDialog'
+import UserRow from '@/components/UserRow'
 import type { User } from '@/data/client/db-schema/user'
 import { user as userTable } from '@/data/client/db-schema/user'
 import {
@@ -70,10 +70,20 @@ export default function AssignedEmployees({
               <div key={assignment.id}>
                 {i > 0 && <Separator className="my-3" />}
                 <div className="flex items-center gap-3">
-                  <AssignedUserRow user={assignedUser} />
+                  <UserRow user={assignedUser} />
                   {isAdmin && (
-                    <UnassignButton
-                      userName={assignedUser?.name ?? 'this user'}
+                    <ConfirmDialog
+                      heading="Remove Assignment"
+                      message={
+                        <>
+                          Are you sure you want to unassign{' '}
+                          <span className="text-foreground font-medium">
+                            {assignedUser?.name ?? 'this user'}
+                          </span>{' '}
+                          from this generator?
+                        </>
+                      }
+                      confirmLabel="Remove"
                       onConfirm={() =>
                         void unassignUserFromGenerator(
                           userId,
@@ -105,77 +115,6 @@ export default function AssignedEmployees({
         )}
       </Card.Content>
     </Card>
-  )
-}
-
-function AssignedUserRow({ user }: { user: User | undefined }) {
-  const name = user?.name ?? 'Unknown'
-
-  return (
-    <div className="flex min-w-0 flex-1 items-center gap-3">
-      <Avatar size="sm">
-        <Avatar.Fallback>{name.charAt(0).toUpperCase()}</Avatar.Fallback>
-      </Avatar>
-      <div className="min-w-0 flex-1">
-        <p className="text-foreground m-0 truncate text-sm font-medium">
-          {name}
-        </p>
-        {user?.email && (
-          <p className="text-default-500 m-0 truncate text-xs">{user.email}</p>
-        )}
-      </div>
-    </div>
-  )
-}
-
-function UnassignButton({
-  userName,
-  onConfirm
-}: {
-  userName: string
-  onConfirm: () => void
-}) {
-  return (
-    <AlertDialog>
-      <AlertDialog.Trigger>
-        <Button
-          size="sm"
-          variant="ghost"
-          isIconOnly
-          className="text-danger"
-          aria-label="Remove assignment"
-        >
-          <Trash2 size={16} />
-        </Button>
-      </AlertDialog.Trigger>
-      <AlertDialog.Backdrop>
-        <AlertDialog.Container>
-          <AlertDialog.Dialog>
-            <AlertDialog.CloseTrigger />
-            <AlertDialog.Header>
-              <AlertDialog.Icon status="danger" />
-              <AlertDialog.Heading>Remove Assignment</AlertDialog.Heading>
-            </AlertDialog.Header>
-            <AlertDialog.Body>
-              <p className="text-default-500 m-0 text-sm">
-                Are you sure you want to unassign{' '}
-                <span className="text-foreground font-medium">{userName}</span>{' '}
-                from this generator?
-              </p>
-            </AlertDialog.Body>
-            <AlertDialog.Footer>
-              <Button
-                variant="primary"
-                className="bg-danger text-danger-foreground"
-                onPress={onConfirm}
-              >
-                Remove
-              </Button>
-            </AlertDialog.Footer>
-          </AlertDialog.Dialog>
-        </AlertDialog.Container>
-      </AlertDialog.Backdrop>
-    </AlertDialog>
   )
 }
 

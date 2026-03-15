@@ -5,8 +5,6 @@ import {
   Input,
   Label,
   Modal,
-  NumberField,
-  Slider,
   Surface,
   TextArea,
   TextField,
@@ -15,6 +13,7 @@ import {
 import { Pencil } from 'lucide-react'
 import { useState } from 'react'
 
+import RuntimeLimitsFields from '@/components/RuntimeLimitsFields'
 import type { Generator } from '@/data/client/db-schema'
 import { updateGenerator } from '@/data/client/mutations/generators'
 
@@ -151,59 +150,14 @@ export default function EditGeneratorModal({
                         Runtime Limits
                       </p>
 
-                      <div className="grid grid-cols-2 gap-3">
-                        <NumberField
-                          isRequired
-                          step={0.5}
-                          value={maxRunHours ?? undefined}
-                          onChange={v => setMaxRunHours(v)}
-                        >
-                          <Label>Max run hours</Label>
-                          <NumberField.Group>
-                            <NumberField.DecrementButton />
-                            <NumberField.Input />
-                            <NumberField.IncrementButton />
-                          </NumberField.Group>
-                          <FieldError />
-                        </NumberField>
-
-                        <NumberField
-                          isRequired
-                          step={0.5}
-                          value={restHours ?? undefined}
-                          onChange={v => setRestHours(v)}
-                        >
-                          <Label>Rest hours</Label>
-                          <NumberField.Group>
-                            <NumberField.DecrementButton />
-                            <NumberField.Input />
-                            <NumberField.IncrementButton />
-                          </NumberField.Group>
-                          <FieldError />
-                        </NumberField>
-                      </div>
-
-                      <Slider
-                        minValue={1}
-                        maxValue={100}
-                        step={1}
-                        value={warningPct}
-                        onChange={v => setWarningPct(v as number)}
-                      >
-                        <Label>Warning threshold</Label>
-                        <Slider.Output>
-                          {({ state: sliderState }) =>
-                            `${sliderState.getThumbValueLabel(0)}%`
-                          }
-                        </Slider.Output>
-                        <Slider.Track>
-                          <Slider.Fill />
-                          <Slider.Thumb />
-                        </Slider.Track>
-                      </Slider>
-                      <p className="text-muted -mt-2 text-xs">
-                        Alert when runtime reaches this percentage.
-                      </p>
+                      <RuntimeLimitsFields
+                        maxRunHours={maxRunHours}
+                        onMaxRunHoursChange={setMaxRunHours}
+                        restHours={restHours}
+                        onRestHoursChange={setRestHours}
+                        warningPct={warningPct}
+                        onWarningPctChange={setWarningPct}
+                      />
                     </div>
                   </Surface>
 

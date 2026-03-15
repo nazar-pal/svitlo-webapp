@@ -5,8 +5,6 @@ import {
   Input,
   Label,
   Modal,
-  NumberField,
-  Slider,
   Surface,
   TextArea,
   TextField,
@@ -17,6 +15,7 @@ import { useState } from 'react'
 
 import { MaintenanceTaskCard } from '@/components/MaintenanceTaskForm'
 import type { MaintenanceTaskFormData } from '@/components/MaintenanceTaskForm'
+import RuntimeLimitsFields from '@/components/RuntimeLimitsFields'
 import { createGeneratorWithMaintenance } from '@/data/client/mutations/generators'
 import { insertGeneratorSchema } from '@/data/client/validation'
 
@@ -349,61 +348,14 @@ function StepTwoContent({
             subtitle="Set operating limits to protect your generator."
           />
 
-          <div className="grid grid-cols-2 gap-3">
-            <NumberField
-              isRequired
-              // minValue={0.1}
-              step={0.5}
-              defaultValue={4.0}
-              value={maxRunHours ?? undefined}
-              onChange={v => setMaxRunHours(v)}
-            >
-              <Label>Max run hours</Label>
-              <NumberField.Group>
-                <NumberField.DecrementButton />
-                <NumberField.Input />
-                <NumberField.IncrementButton />
-              </NumberField.Group>
-              <FieldError />
-            </NumberField>
-
-            <NumberField
-              isRequired
-              // minValue={0.1}
-              step={0.5}
-              defaultValue={1.0}
-              value={restHours ?? undefined}
-              onChange={v => setRestHours(v)}
-            >
-              <Label>Rest hours</Label>
-              <NumberField.Group>
-                <NumberField.DecrementButton />
-                <NumberField.Input />
-                <NumberField.IncrementButton />
-              </NumberField.Group>
-              <FieldError />
-            </NumberField>
-          </div>
-
-          <Slider
-            minValue={1}
-            maxValue={100}
-            step={1}
-            value={warningPct}
-            onChange={v => setWarningPct(v as number)}
-          >
-            <Label>Warning threshold</Label>
-            <Slider.Output>
-              {({ state }) => `${state.getThumbValueLabel(0)}%`}
-            </Slider.Output>
-            <Slider.Track>
-              <Slider.Fill />
-              <Slider.Thumb />
-            </Slider.Track>
-          </Slider>
-          <p className="text-muted -mt-2 text-xs">
-            Alert when runtime reaches this percentage.
-          </p>
+          <RuntimeLimitsFields
+            maxRunHours={maxRunHours}
+            onMaxRunHoursChange={setMaxRunHours}
+            restHours={restHours}
+            onRestHoursChange={setRestHours}
+            warningPct={warningPct}
+            onWarningPctChange={setWarningPct}
+          />
         </div>
       </Surface>
 

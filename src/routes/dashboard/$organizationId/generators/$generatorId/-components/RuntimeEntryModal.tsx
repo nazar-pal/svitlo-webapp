@@ -16,22 +16,7 @@ import {
   logManualSession,
   updateSession
 } from '@/data/client/mutations/sessions'
-
-function nowLocal(): string {
-  const d = new Date()
-  d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
-  return d.toISOString().slice(0, 16)
-}
-
-function toLocal(iso: string): string {
-  const d = new Date(iso)
-  d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
-  return d.toISOString().slice(0, 16)
-}
-
-function toISO(local: string): string {
-  return new Date(local).toISOString()
-}
+import { nowLocal, toISO, toLocal } from '@/lib/time'
 
 interface RuntimeEntryModalProps {
   isOpen: boolean

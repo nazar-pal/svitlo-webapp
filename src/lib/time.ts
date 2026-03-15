@@ -4,6 +4,22 @@ import {
   parseISO
 } from 'date-fns'
 
+export function nowLocal(): string {
+  const d = new Date()
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
+  return d.toISOString().slice(0, 16)
+}
+
+export function toLocal(iso: string): string {
+  const d = new Date(iso)
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
+  return d.toISOString().slice(0, 16)
+}
+
+export function toISO(local: string): string {
+  return new Date(local).toISOString()
+}
+
 export function hoursBetween(start: string, end: string): number {
   return differenceInMilliseconds(parseISO(end), parseISO(start)) / 3_600_000
 }
