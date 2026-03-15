@@ -1,12 +1,13 @@
-import { db } from '@/lib/powersync/database'
 import { eq } from 'drizzle-orm'
+
+import { db } from '@/lib/powersync/database'
 import { user } from '../db-schema'
 
-interface Params {
-  userId: string
+export function getAllUsers() {
+  return db.select().from(user)
 }
 
-export function getUser({ userId }: Params) {
+export function getUser({ userId }: { userId: string }) {
   return db.query.user.findFirst({
     where: eq(user.id, userId),
     columns: {
