@@ -3,9 +3,9 @@ import { addHours, compareDesc, isFuture, parseISO } from 'date-fns'
 import type { Generator, GeneratorSession } from '@/data/client/db-schema'
 import { hoursBetween } from '@/lib/time'
 
-type GeneratorStatus = 'running' | 'resting' | 'available'
+export type GeneratorStatus = 'running' | 'resting' | 'available'
 
-interface GeneratorStatusInfo {
+export interface GeneratorStatusInfo {
   status: GeneratorStatus
   openSession: GeneratorSession | null
   restEndsAt: Date | null
