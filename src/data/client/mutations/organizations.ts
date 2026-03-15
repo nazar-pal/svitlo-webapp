@@ -18,12 +18,15 @@ import { db } from '@/lib/powersync/database'
 import { fail, isOrgAdmin, newId, nowISO, ok } from './helpers'
 import type { MutationResult } from './helpers'
 
+type CreateOrgResult = { ok: true; id: string } | { ok: false; error: string }
+
 export async function createOrganization(
   userId: string,
   input: InsertOrganizationInput
-): Promise<MutationResult> {
+): Promise<CreateOrgResult> {
   const parsed = insertOrganizationSchema.safeParse(input)
-  if (!parsed.success) return fail(parsed.error.issues[0].message)
+  if (!parsed.success)
+    return { ok: false, error: parsed.error.issues[0].message } as const
 
   const id = newId()
   const createdAt = nowISO()
@@ -35,7 +38,7 @@ export async function createOrganization(
     createdAt
   })
 
-  return ok
+  return { ok: true, id }
 }
 
 export async function createInvitation(

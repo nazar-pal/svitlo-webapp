@@ -9,7 +9,7 @@ import { PowerSyncProvider } from '@/lib/powersync/context'
 import SidebarContent from './-sidebar/SidebarContent'
 
 const dashboardSearchSchema = z.object({
-  modal: z.enum(['create-org']).optional()
+  modal: z.enum(['create-org', 'create-generator']).optional()
 })
 
 export const Route = createFileRoute('/dashboard')({

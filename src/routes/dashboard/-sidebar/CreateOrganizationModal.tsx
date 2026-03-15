@@ -9,6 +9,7 @@ import {
   TextField,
   useOverlayState
 } from '@heroui/react'
+import { useNavigate } from '@tanstack/react-router'
 import { Building2 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -27,6 +28,7 @@ export default function CreateOrganizationModal({
 }: CreateOrganizationModalProps) {
   const [name, setName] = useState('')
   const [error, setError] = useState('')
+  const navigate = useNavigate()
 
   const state = useOverlayState({
     isOpen,
@@ -44,6 +46,10 @@ export default function CreateOrganizationModal({
 
     setName('')
     onClose()
+    navigate({
+      to: '/dashboard/$organizationId',
+      params: { organizationId: result.id }
+    })
   }
 
   return (

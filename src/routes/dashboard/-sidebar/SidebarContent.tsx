@@ -1,5 +1,5 @@
 import { Button, Chip, Separator } from '@heroui/react'
-import { Link } from '@tanstack/react-router'
+import { Link, useParams } from '@tanstack/react-router'
 import { LogOut } from 'lucide-react'
 
 import { authClient } from '@/lib/auth/auth-client'
@@ -9,8 +9,9 @@ import { useUserOrgs } from '@/lib/hooks/use-user-orgs'
 import { getInvitationsByEmail } from '@/data/client/queries/organizations'
 import { SyncStatusIndicator } from '@/components/sync-status-indicator'
 import ThemeToggle from '@/components/ThemeToggle'
+import GeneratorList from './GeneratorList'
 import InvitationList from './InvitationList'
-import OrganizationList from './OrganizationList'
+import OrganizationSelector from './OrganizationSelector'
 import UserProfile from './UserProfile'
 
 interface SidebarContentProps {
@@ -20,7 +21,8 @@ interface SidebarContentProps {
 export default function SidebarContent({ onNavigate }: SidebarContentProps) {
   const { data: session } = authClient.useSession()
   const user = session?.user
-  const { userOrgs, allOrgs, userId } = useUserOrgs()
+  const { userOrgs, allOrgs, isAdmin, userId } = useUserOrgs()
+  const { organizationId } = useParams({ strict: false })
 
   const email = user?.email ?? ''
   const { data: invitations } = useDrizzleQuery(
@@ -43,23 +45,19 @@ export default function SidebarContent({ onNavigate }: SidebarContentProps) {
 
       <Separator />
 
-      {user && (
-        <UserProfile
-          name={user.name ?? ''}
-          email={user.email ?? ''}
-          image={user.image ?? null}
-        />
-      )}
-
-      <SyncStatusIndicator />
-
-      <Separator />
-
-      <OrganizationList
+      <OrganizationSelector
         organizations={userOrgs}
         userId={userId}
         onNavigate={onNavigate}
       />
+
+      <GeneratorList
+        organizationId={organizationId}
+        isAdmin={isAdmin(organizationId ?? null)}
+        onNavigate={onNavigate}
+      />
+
+      <SyncStatusIndicator />
 
       <InvitationList
         invitations={invitations}
@@ -69,6 +67,18 @@ export default function SidebarContent({ onNavigate }: SidebarContentProps) {
       />
 
       <Separator />
+
+      <div className="flex-1" />
+
+      <Separator />
+
+      {user && (
+        <UserProfile
+          name={user.name ?? ''}
+          email={user.email ?? ''}
+          image={user.image ?? null}
+        />
+      )}
 
       <div className="flex items-center justify-between p-4">
         <ThemeToggle />

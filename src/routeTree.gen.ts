@@ -16,8 +16,13 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as MarketingIndexRouteImport } from './routes/_marketing/index'
 import { Route as ApiSplatRouteImport } from './routes/api.$'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
+import { Route as DashboardOrganizationIdRouteRouteImport } from './routes/dashboard/$organizationId/route'
+import { Route as DashboardOrganizationIdIndexRouteImport } from './routes/dashboard/$organizationId/index'
 import { Route as ApiRpcSplatRouteImport } from './routes/api.rpc.$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as DashboardOrganizationIdGeneratorsRouteRouteImport } from './routes/dashboard/$organizationId/generators/route'
+import { Route as DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteImport } from './routes/dashboard/$organizationId/generators/$generatorId/route'
+import { Route as DashboardOrganizationIdGeneratorsGeneratorIdIndexRouteImport } from './routes/dashboard/$organizationId/generators/$generatorId/index'
 
 const MarketingRoute = MarketingRouteImport.update({
   id: '/_marketing',
@@ -52,6 +57,18 @@ const AuthSignInRoute = AuthSignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => AuthRoute,
 } as any)
+const DashboardOrganizationIdRouteRoute =
+  DashboardOrganizationIdRouteRouteImport.update({
+    id: '/$organizationId',
+    path: '/$organizationId',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
+const DashboardOrganizationIdIndexRoute =
+  DashboardOrganizationIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
 const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
   id: '/api/rpc/$',
   path: '/api/rpc/$',
@@ -62,59 +79,110 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardOrganizationIdGeneratorsRouteRoute =
+  DashboardOrganizationIdGeneratorsRouteRouteImport.update({
+    id: '/generators',
+    path: '/generators',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdGeneratorsGeneratorIdRouteRoute =
+  DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteImport.update({
+    id: '/$generatorId',
+    path: '/$generatorId',
+    getParentRoute: () => DashboardOrganizationIdGeneratorsRouteRoute,
+  } as any)
+const DashboardOrganizationIdGeneratorsGeneratorIdIndexRoute =
+  DashboardOrganizationIdGeneratorsGeneratorIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () =>
+      DashboardOrganizationIdGeneratorsGeneratorIdRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/': typeof MarketingIndexRoute
+  '/dashboard/$organizationId': typeof DashboardOrganizationIdRouteRouteWithChildren
   '/sign-in': typeof AuthSignInRoute
   '/api/$': typeof ApiSplatRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/$organizationId/generators': typeof DashboardOrganizationIdGeneratorsRouteRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
+  '/dashboard/$organizationId/': typeof DashboardOrganizationIdIndexRoute
+  '/dashboard/$organizationId/generators/$generatorId': typeof DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteWithChildren
+  '/dashboard/$organizationId/generators/$generatorId/': typeof DashboardOrganizationIdGeneratorsGeneratorIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof MarketingIndexRoute
   '/sign-in': typeof AuthSignInRoute
   '/api/$': typeof ApiSplatRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/$organizationId/generators': typeof DashboardOrganizationIdGeneratorsRouteRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
+  '/dashboard/$organizationId': typeof DashboardOrganizationIdIndexRoute
+  '/dashboard/$organizationId/generators/$generatorId': typeof DashboardOrganizationIdGeneratorsGeneratorIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/_auth': typeof AuthRouteWithChildren
   '/_marketing': typeof MarketingRouteWithChildren
+  '/dashboard/$organizationId': typeof DashboardOrganizationIdRouteRouteWithChildren
   '/_auth/sign-in': typeof AuthSignInRoute
   '/api/$': typeof ApiSplatRoute
   '/_marketing/': typeof MarketingIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/$organizationId/generators': typeof DashboardOrganizationIdGeneratorsRouteRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
+  '/dashboard/$organizationId/': typeof DashboardOrganizationIdIndexRoute
+  '/dashboard/$organizationId/generators/$generatorId': typeof DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteWithChildren
+  '/dashboard/$organizationId/generators/$generatorId/': typeof DashboardOrganizationIdGeneratorsGeneratorIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/dashboard'
     | '/'
+    | '/dashboard/$organizationId'
     | '/sign-in'
     | '/api/$'
     | '/dashboard/'
+    | '/dashboard/$organizationId/generators'
     | '/api/auth/$'
     | '/api/rpc/$'
+    | '/dashboard/$organizationId/'
+    | '/dashboard/$organizationId/generators/$generatorId'
+    | '/dashboard/$organizationId/generators/$generatorId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sign-in' | '/api/$' | '/dashboard' | '/api/auth/$' | '/api/rpc/$'
+  to:
+    | '/'
+    | '/sign-in'
+    | '/api/$'
+    | '/dashboard'
+    | '/dashboard/$organizationId/generators'
+    | '/api/auth/$'
+    | '/api/rpc/$'
+    | '/dashboard/$organizationId'
+    | '/dashboard/$organizationId/generators/$generatorId'
   id:
     | '__root__'
     | '/dashboard'
     | '/_auth'
     | '/_marketing'
+    | '/dashboard/$organizationId'
     | '/_auth/sign-in'
     | '/api/$'
     | '/_marketing/'
     | '/dashboard/'
+    | '/dashboard/$organizationId/generators'
     | '/api/auth/$'
     | '/api/rpc/$'
+    | '/dashboard/$organizationId/'
+    | '/dashboard/$organizationId/generators/$generatorId'
+    | '/dashboard/$organizationId/generators/$generatorId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -177,6 +245,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignInRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/dashboard/$organizationId': {
+      id: '/dashboard/$organizationId'
+      path: '/$organizationId'
+      fullPath: '/dashboard/$organizationId'
+      preLoaderRoute: typeof DashboardOrganizationIdRouteRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/$organizationId/': {
+      id: '/dashboard/$organizationId/'
+      path: '/'
+      fullPath: '/dashboard/$organizationId/'
+      preLoaderRoute: typeof DashboardOrganizationIdIndexRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
+    }
     '/api/rpc/$': {
       id: '/api/rpc/$'
       path: '/api/rpc/$'
@@ -191,14 +273,85 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/$organizationId/generators': {
+      id: '/dashboard/$organizationId/generators'
+      path: '/generators'
+      fullPath: '/dashboard/$organizationId/generators'
+      preLoaderRoute: typeof DashboardOrganizationIdGeneratorsRouteRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
+    }
+    '/dashboard/$organizationId/generators/$generatorId': {
+      id: '/dashboard/$organizationId/generators/$generatorId'
+      path: '/$generatorId'
+      fullPath: '/dashboard/$organizationId/generators/$generatorId'
+      preLoaderRoute: typeof DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteImport
+      parentRoute: typeof DashboardOrganizationIdGeneratorsRouteRoute
+    }
+    '/dashboard/$organizationId/generators/$generatorId/': {
+      id: '/dashboard/$organizationId/generators/$generatorId/'
+      path: '/'
+      fullPath: '/dashboard/$organizationId/generators/$generatorId/'
+      preLoaderRoute: typeof DashboardOrganizationIdGeneratorsGeneratorIdIndexRouteImport
+      parentRoute: typeof DashboardOrganizationIdGeneratorsGeneratorIdRouteRoute
+    }
   }
 }
 
+interface DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteChildren {
+  DashboardOrganizationIdGeneratorsGeneratorIdIndexRoute: typeof DashboardOrganizationIdGeneratorsGeneratorIdIndexRoute
+}
+
+const DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteChildren: DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteChildren =
+  {
+    DashboardOrganizationIdGeneratorsGeneratorIdIndexRoute:
+      DashboardOrganizationIdGeneratorsGeneratorIdIndexRoute,
+  }
+
+const DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteWithChildren =
+  DashboardOrganizationIdGeneratorsGeneratorIdRouteRoute._addFileChildren(
+    DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteChildren,
+  )
+
+interface DashboardOrganizationIdGeneratorsRouteRouteChildren {
+  DashboardOrganizationIdGeneratorsGeneratorIdRouteRoute: typeof DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteWithChildren
+}
+
+const DashboardOrganizationIdGeneratorsRouteRouteChildren: DashboardOrganizationIdGeneratorsRouteRouteChildren =
+  {
+    DashboardOrganizationIdGeneratorsGeneratorIdRouteRoute:
+      DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteWithChildren,
+  }
+
+const DashboardOrganizationIdGeneratorsRouteRouteWithChildren =
+  DashboardOrganizationIdGeneratorsRouteRoute._addFileChildren(
+    DashboardOrganizationIdGeneratorsRouteRouteChildren,
+  )
+
+interface DashboardOrganizationIdRouteRouteChildren {
+  DashboardOrganizationIdGeneratorsRouteRoute: typeof DashboardOrganizationIdGeneratorsRouteRouteWithChildren
+  DashboardOrganizationIdIndexRoute: typeof DashboardOrganizationIdIndexRoute
+}
+
+const DashboardOrganizationIdRouteRouteChildren: DashboardOrganizationIdRouteRouteChildren =
+  {
+    DashboardOrganizationIdGeneratorsRouteRoute:
+      DashboardOrganizationIdGeneratorsRouteRouteWithChildren,
+    DashboardOrganizationIdIndexRoute: DashboardOrganizationIdIndexRoute,
+  }
+
+const DashboardOrganizationIdRouteRouteWithChildren =
+  DashboardOrganizationIdRouteRoute._addFileChildren(
+    DashboardOrganizationIdRouteRouteChildren,
+  )
+
 interface DashboardRouteRouteChildren {
+  DashboardOrganizationIdRouteRoute: typeof DashboardOrganizationIdRouteRouteWithChildren
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardOrganizationIdRouteRoute:
+    DashboardOrganizationIdRouteRouteWithChildren,
   DashboardIndexRoute: DashboardIndexRoute,
 }
 
