@@ -48,6 +48,7 @@ export default function SidebarContent({ onNavigate }: SidebarContentProps) {
 
       <GeneratorList
         organizationId={organizationId}
+        userId={userId}
         isAdmin={isAdmin(organizationId ?? null)}
         onNavigate={onNavigate}
       />

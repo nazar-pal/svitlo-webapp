@@ -8,12 +8,14 @@ import CreateGeneratorModal from './CreateGeneratorModal'
 
 interface GeneratorListProps {
   organizationId: string | undefined
+  userId: string
   isAdmin: boolean
   onNavigate?: () => void
 }
 
 export default function GeneratorList({
   organizationId,
+  userId,
   isAdmin,
   onNavigate
 }: GeneratorListProps) {
@@ -77,6 +79,8 @@ export default function GeneratorList({
       <CreateGeneratorModal
         isOpen={modal === 'create-generator'}
         onClose={() => navigate({ to: '.', search: {} })}
+        userId={userId}
+        organizationId={organizationId}
       />
     </div>
   )
