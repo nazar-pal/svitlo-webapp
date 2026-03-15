@@ -10,20 +10,20 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint",
-    "format": "prettier --check .",
-    "check": "prettier --write . && eslint --fix",
+    "check": "prettier --check .",
+    "format": "prettier --write . && eslint --fix",
+    "flt": "npm run format && npm run lint && npm run typecheck",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:push": "drizzle-kit push",
-    "db:pull": "drizzle-kit pull",
-    "db:studio": "drizzle-kit studio"
+    "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.43",
     "@heroui/react": "^3.0.0-rc.1",
     "@heroui/styles": "^3.0.0-rc.1",
     "@journeyapps/wa-sqlite": "^1.5.0",
+    "@mastra/core": "^1.13.2",
     "@neondatabase/serverless": "^1.0.2",
     "@neondatabase/vite-plugin-postgres": "^0.7.0",
     "@orpc/client": "^1.13.6",
@@ -33,6 +33,7 @@
     "@orpc/tanstack-query": "^1.13.6",
     "@orpc/zod": "^1.13.6",
     "@powersync/drizzle-driver": "^0.7.3",
+    "@powersync/react": "^1.9.0",
     "@powersync/web": "^1.36.0",
     "@t3-oss/env-core": "^0.13.10",
     "@tailwindcss/vite": "^4.1.18",
@@ -73,17 +74,13 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "dotenv": "^17.3.1",
     "jsdom": "^28.1.0",
+    "knip": "^5.86.0",
     "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "tsx": "^4.21.0",
     "typescript": "^5.7.2",
     "vite": "^7.3.1",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.5"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "lightningcss"
-    ]
   }
 }

@@ -1,12 +1,13 @@
 import {
   HeadContent,
   Scripts,
-  createRootRouteWithContext,
+  createRootRouteWithContext
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
+import { SessionStatusProvider } from '../lib/auth/session-status-context'
 
 import TanStackQueryProvider from '../integrations/tanstack-query/root-provider'
 
@@ -26,24 +27,39 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   head: () => ({
     meta: [
       {
-        charSet: 'utf-8',
+        charSet: 'utf-8'
       },
       {
         name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
+        content: 'width=device-width, initial-scale=1'
       },
       {
-        title: 'TanStack Start Starter',
-      },
+        title: 'Svitlo'
+      }
     ],
     links: [
       {
         rel: 'stylesheet',
-        href: appCss,
+        href: appCss
       },
-    ],
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '48x48',
+        href: '/favicon.png'
+      },
+      {
+        rel: 'apple-touch-icon',
+        sizes: '180x180',
+        href: '/apple-touch-icon.png'
+      },
+      {
+        rel: 'manifest',
+        href: '/manifest.json'
+      }
+    ]
   }),
-  shellComponent: RootDocument,
+  shellComponent: RootDocument
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -53,23 +69,25 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
-      <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
+      <body className="font-sans [overflow-wrap:anywhere] antialiased selection:bg-[rgba(79,184,178,0.24)]">
         <TanStackQueryProvider>
-          <Header />
-          {children}
-          <Footer />
-          <TanStackDevtools
-            config={{
-              position: 'bottom-right',
-            }}
-            plugins={[
-              {
-                name: 'Tanstack Router',
-                render: <TanStackRouterDevtoolsPanel />,
-              },
-              TanStackQueryDevtools,
-            ]}
-          />
+          <SessionStatusProvider>
+            <Header />
+            {children}
+            <Footer />
+            <TanStackDevtools
+              config={{
+                position: 'bottom-right'
+              }}
+              plugins={[
+                {
+                  name: 'Tanstack Router',
+                  render: <TanStackRouterDevtoolsPanel />
+                },
+                TanStackQueryDevtools
+              ]}
+            />
+          </SessionStatusProvider>
         </TanStackQueryProvider>
         <Scripts />
       </body>

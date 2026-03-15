@@ -7,19 +7,24 @@ import { createIsomorphicFn } from '@tanstack/react-start'
 
 import type { RouterClient } from '@orpc/server'
 
+import { db } from '@/data/server'
+import { auth } from '@/data/server/auth'
+
 import router from '#/orpc/router'
 
 const getORPCClient = createIsomorphicFn()
   .server(() =>
     createRouterClient(router, {
-      context: () => ({
-        headers: getRequestHeaders(),
-      }),
-    }),
+      context: async () => {
+        const headers = getRequestHeaders()
+        const session = await auth.api.getSession({ headers })
+        return { db, session, headers }
+      }
+    })
   )
   .client((): RouterClient<typeof router> => {
     const link = new RPCLink({
-      url: `${window.location.origin}/api/rpc`,
+      url: `${window.location.origin}/api/rpc`
     })
     return createORPCClient(link)
   })

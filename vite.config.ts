@@ -17,10 +17,10 @@ const config = defineConfig({
     tanstackStart(),
     viteReact({
       babel: {
-        plugins: ['babel-plugin-react-compiler'],
-      },
-    }),
-  ],
+        plugins: ['babel-plugin-react-compiler']
+      }
+    })
+  ]
 })
 
 export default config
