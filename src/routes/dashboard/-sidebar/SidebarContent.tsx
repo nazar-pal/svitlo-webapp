@@ -1,5 +1,5 @@
-import { Button, Chip, Separator } from '@heroui/react'
-import { Link, useParams } from '@tanstack/react-router'
+import { Button, Separator } from '@heroui/react'
+import { useParams } from '@tanstack/react-router'
 import { LogOut } from 'lucide-react'
 
 import { authClient } from '@/lib/auth/auth-client'
@@ -31,16 +31,11 @@ export default function SidebarContent({ onNavigate }: SidebarContentProps) {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="p-4">
-        <Link
-          to="/dashboard"
-          className="inline-block no-underline"
-          onClick={onNavigate}
-        >
-          <Chip color="accent" variant="secondary" size="sm">
-            Svitlo
-          </Chip>
-        </Link>
+      <div className="flex items-center gap-3 px-4 py-5">
+        <img src="/favicon.png" alt="Svitlo" className="size-8" />
+        <span className="text-foreground text-lg font-semibold tracking-tight">
+          Svitlo
+        </span>
       </div>
 
       <Separator />
@@ -57,8 +52,6 @@ export default function SidebarContent({ onNavigate }: SidebarContentProps) {
         onNavigate={onNavigate}
       />
 
-      <SyncStatusIndicator />
-
       <InvitationList
         invitations={invitations}
         allOrgs={allOrgs}
@@ -69,6 +62,8 @@ export default function SidebarContent({ onNavigate }: SidebarContentProps) {
       <Separator />
 
       <div className="flex-1" />
+
+      <SyncStatusIndicator />
 
       <Separator />
 

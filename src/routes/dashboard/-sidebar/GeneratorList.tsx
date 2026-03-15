@@ -1,6 +1,6 @@
-import { Button } from '@heroui/react'
+import { Button, Card } from '@heroui/react'
 import { Link, useNavigate, useSearch } from '@tanstack/react-router'
-import { Plus } from 'lucide-react'
+import { Plus, Zap } from 'lucide-react'
 
 import { getGeneratorsByOrg } from '@/data/client/queries/generators'
 import { useDrizzleQuery } from '@/lib/hooks/use-drizzle-query'
@@ -46,17 +46,33 @@ export default function GeneratorList({
         </Button>
       </div>
 
-      {generators.map(gen => (
-        <Link
-          key={gen.id}
-          to="/dashboard/$organizationId/generators/$generatorId"
-          params={{ organizationId, generatorId: gen.id }}
-          onClick={onNavigate}
-          className="text-foreground hover:bg-default-100 block truncate rounded-lg px-3 py-2 text-sm no-underline"
-        >
-          {gen.title}
-        </Link>
-      ))}
+      <div className="flex flex-col gap-1.5">
+        {generators.map(gen => (
+          <Link
+            key={gen.id}
+            to="/dashboard/$organizationId/generators/$generatorId"
+            params={{ organizationId, generatorId: gen.id }}
+            onClick={onNavigate}
+            className="no-underline"
+          >
+            <Card className="border-default-200 hover:border-default-400 border transition-colors">
+              <Card.Content className="flex items-center gap-3 px-3 py-2.5">
+                <div className="bg-default-100 flex shrink-0 items-center justify-center rounded-md p-1.5">
+                  <Zap size={14} className="text-default-600" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-foreground m-0 truncate text-sm font-medium">
+                    {gen.title}
+                  </p>
+                  <p className="text-default-400 m-0 truncate text-xs">
+                    {gen.model}
+                  </p>
+                </div>
+              </Card.Content>
+            </Card>
+          </Link>
+        ))}
+      </div>
 
       <CreateGeneratorModal
         isOpen={modal === 'create-generator'}
