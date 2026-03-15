@@ -1,0 +1,33 @@
+{
+  "projectName": "svitlo-webapp",
+  "mode": "file-router",
+  "typescript": true,
+  "packageManager": "bun",
+  "includeExamples": true,
+  "tailwind": true,
+  "addOnOptions": {
+    "drizzle": {
+      "database": "postgresql"
+    }
+  },
+  "envVarValues": {},
+  "git": true,
+  "routerOnly": false,
+  "version": 1,
+  "framework": "react",
+  "chosenAddOns": [
+    "biome",
+    "nitro",
+    "neon",
+    "drizzle",
+    "t3env",
+    "shadcn",
+    "tRPC",
+    "better-auth",
+    "compiler",
+    "form",
+    "mcp",
+    "tanstack-query",
+    "events"
+  ]
+}
