@@ -5,8 +5,6 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
-import Footer from '../components/Footer'
-import Header from '../components/Header'
 import { SessionStatusProvider } from '../lib/auth/session-status-context'
 
 import TanStackQueryProvider from '../integrations/tanstack-query/root-provider'
@@ -69,12 +67,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
-      <body className="font-sans [overflow-wrap:anywhere] antialiased selection:bg-[rgba(79,184,178,0.24)]">
+      <body className="bg-background text-foreground selection:bg-accent/25 font-sans [overflow-wrap:anywhere] antialiased">
         <TanStackQueryProvider>
           <SessionStatusProvider>
-            <Header />
             {children}
-            <Footer />
             <TanStackDevtools
               config={{
                 position: 'bottom-right'

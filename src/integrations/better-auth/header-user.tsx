@@ -26,7 +26,10 @@ export default function BetterAuthHeader() {
     )
 
   return (
-    <Link to="/" className="button button--secondary button--sm no-underline">
+    <Link
+      to="/sign-in"
+      className="button button--secondary button--sm no-underline"
+    >
       Sign in
     </Link>
   )

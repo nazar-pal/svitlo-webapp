@@ -6,4 +6,5 @@ export async function signOut() {
   powersync.disconnect()
   clearCredentialCache()
   await authClient.signOut()
+  window.location.href = '/'
 }

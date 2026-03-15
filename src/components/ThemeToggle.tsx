@@ -60,11 +60,7 @@ export default function ThemeToggle() {
 
   return (
     <Dropdown>
-      <Button
-        variant="secondary"
-        size="sm"
-        className="rounded-full border border-[var(--chip-line)] bg-[var(--chip-bg)] text-[var(--sea-ink)]"
-      >
+      <Button variant="ghost" size="sm">
         {modeLabels[mode]}
       </Button>
       <Dropdown.Popover>
