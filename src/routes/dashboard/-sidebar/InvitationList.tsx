@@ -5,6 +5,7 @@ import type {
   Invitation,
   Organization
 } from '@/data/client/db-schema/organizations'
+import type { User } from '@/data/client/db-schema/user'
 import {
   acceptInvitation,
   declineInvitation
@@ -13,6 +14,7 @@ import {
 interface InvitationListProps {
   invitations: Invitation[]
   allOrgs: Organization[]
+  allUsers: User[]
   userId: string
   userEmail: string
 }
@@ -20,12 +22,14 @@ interface InvitationListProps {
 export default function InvitationList({
   invitations,
   allOrgs,
+  allUsers,
   userId,
   userEmail
 }: InvitationListProps) {
   if (invitations.length === 0) return null
 
   const orgMap = new Map(allOrgs.map(o => [o.id, o]))
+  const userMap = new Map(allUsers.map(u => [u.id, u]))
 
   return (
     <div className="px-2 pb-2">
@@ -38,14 +42,22 @@ export default function InvitationList({
 
       {invitations.map(inv => {
         const org = orgMap.get(inv.organizationId)
+        const inviter = userMap.get(inv.invitedByUserId)
         return (
           <div
             key={inv.id}
             className="bg-default-100 flex items-center justify-between rounded-lg px-3 py-2"
           >
-            <span className="text-foreground truncate text-sm">
-              {org?.name ?? 'Unknown'}
-            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-foreground m-0 truncate text-sm">
+                {org?.name ?? 'Unknown'}
+              </p>
+              {inviter && (
+                <p className="text-muted m-0 truncate text-xs">
+                  from {inviter.name}
+                </p>
+              )}
+            </div>
             <div className="flex gap-1">
               <Button
                 size="sm"

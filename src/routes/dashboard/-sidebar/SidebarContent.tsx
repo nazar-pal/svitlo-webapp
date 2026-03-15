@@ -2,11 +2,12 @@ import { Button, Separator } from '@heroui/react'
 import { Link, useParams } from '@tanstack/react-router'
 import { LogOut, Settings } from 'lucide-react'
 
+import { user as userTable } from '@/data/client/db-schema'
+import { getInvitationsByEmail } from '@/data/client/queries/organizations'
 import { authClient } from '@/lib/auth/auth-client'
 import { signOut } from '@/lib/auth/sign-out'
 import { useDrizzleQuery } from '@/lib/hooks/use-drizzle-query'
 import { useUserOrgs } from '@/lib/hooks/use-user-orgs'
-import { getInvitationsByEmail } from '@/data/client/queries/organizations'
 import { SyncStatusIndicator } from '@/components/sync-status-indicator'
 import ThemeToggle from '@/components/ThemeToggle'
 import GeneratorList from './GeneratorList'
@@ -24,10 +25,11 @@ export default function SidebarContent({ onNavigate }: SidebarContentProps) {
   const { userOrgs, allOrgs, isAdmin, userId } = useUserOrgs()
   const { organizationId } = useParams({ strict: false })
 
-  const email = user?.email ?? ''
+  const email = session?.user?.email ?? ''
   const { data: invitations } = useDrizzleQuery(
     email ? getInvitationsByEmail(email) : undefined
   )
+  const { data: allUsers } = useDrizzleQuery(d => d.select().from(userTable))
 
   return (
     <div className="flex h-full flex-col">
@@ -56,6 +58,7 @@ export default function SidebarContent({ onNavigate }: SidebarContentProps) {
       <InvitationList
         invitations={invitations}
         allOrgs={allOrgs}
+        allUsers={allUsers}
         userId={userId}
         userEmail={email}
       />
