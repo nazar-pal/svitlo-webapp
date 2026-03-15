@@ -1,35 +1,24 @@
 import {
   Button,
-  Card,
   FieldError,
   Form,
   Input,
   Label,
-  ListBox,
   Modal,
   NumberField,
-  Select,
   Slider,
   Surface,
   TextArea,
   TextField,
   useOverlayState
 } from '@heroui/react'
-import { Plus, Trash2, Zap } from 'lucide-react'
+import { Plus, Zap } from 'lucide-react'
 import { useState } from 'react'
 
+import { MaintenanceTaskCard } from '@/components/MaintenanceTaskForm'
+import type { MaintenanceTaskFormData } from '@/components/MaintenanceTaskForm'
 import { createGeneratorWithMaintenance } from '@/data/client/mutations/generators'
 import { insertGeneratorSchema } from '@/data/client/validation'
-
-interface MaintenanceTaskForm {
-  key: number
-  taskName: string
-  description: string
-  triggerType: 'hours' | 'calendar' | 'whichever_first'
-  triggerHoursInterval: number | null
-  triggerCalendarDays: number | null
-  isOneTime: boolean
-}
 
 interface CreateGeneratorModalProps {
   isOpen: boolean
@@ -74,7 +63,7 @@ export default function CreateGeneratorModal({
   const [warningPct, setWarningPct] = useState(80)
 
   // Step 2 - maintenance tasks
-  const [tasks, setTasks] = useState<MaintenanceTaskForm[]>([])
+  const [tasks, setTasks] = useState<MaintenanceTaskFormData[]>([])
 
   // Global
   const [error, setError] = useState('')
@@ -163,7 +152,7 @@ export default function CreateGeneratorModal({
     ])
   }
 
-  function updateTask(key: number, patch: Partial<MaintenanceTaskForm>) {
+  function updateTask(key: number, patch: Partial<MaintenanceTaskFormData>) {
     setTasks(prev => prev.map(t => (t.key === key ? { ...t, ...patch } : t)))
   }
 
@@ -331,9 +320,9 @@ interface StepTwoProps {
   setRestHours: (v: number | null) => void
   warningPct: number
   setWarningPct: (v: number) => void
-  tasks: MaintenanceTaskForm[]
+  tasks: MaintenanceTaskFormData[]
   addTask: () => void
-  updateTask: (key: number, patch: Partial<MaintenanceTaskForm>) => void
+  updateTask: (key: number, patch: Partial<MaintenanceTaskFormData>) => void
   removeTask: (key: number) => void
   error: string
 }
@@ -428,8 +417,8 @@ function StepTwoContent({
           <MaintenanceTaskCard
             key={task.key}
             task={task}
-            updateTask={updateTask}
-            removeTask={removeTask}
+            onChange={patch => updateTask(task.key, patch)}
+            onRemove={() => removeTask(task.key)}
           />
         ))}
 
@@ -441,152 +430,5 @@ function StepTwoContent({
 
       {error && <p className="text-danger text-sm">{error}</p>}
     </div>
-  )
-}
-
-// ---------- Maintenance Task Card ----------
-
-interface MaintenanceTaskCardProps {
-  task: MaintenanceTaskForm
-  updateTask: (key: number, patch: Partial<MaintenanceTaskForm>) => void
-  removeTask: (key: number) => void
-}
-
-const TRIGGER_TYPES = [
-  { id: 'hours', label: 'Run hours' },
-  { id: 'calendar', label: 'Calendar days' },
-  { id: 'whichever_first', label: 'Whichever first' }
-] as const
-
-function MaintenanceTaskCard({
-  task,
-  updateTask,
-  removeTask
-}: MaintenanceTaskCardProps) {
-  const showHours =
-    task.triggerType === 'hours' || task.triggerType === 'whichever_first'
-  const showDays =
-    task.triggerType === 'calendar' || task.triggerType === 'whichever_first'
-
-  return (
-    <Card>
-      <Card.Content className="flex flex-col gap-3 p-3">
-        <div className="flex items-center justify-between">
-          <p className="text-foreground text-sm font-medium">
-            {task.taskName || 'New Task'}
-          </p>
-          <Button
-            size="sm"
-            isIconOnly
-            variant="ghost"
-            onPress={() => removeTask(task.key)}
-            aria-label="Remove task"
-          >
-            <Trash2 size={14} />
-          </Button>
-        </div>
-
-        <TextField
-          name="taskName"
-          isRequired
-          value={task.taskName}
-          onChange={v => updateTask(task.key, { taskName: v })}
-        >
-          <Label>Task name</Label>
-          <Input placeholder="Oil change" variant="secondary" />
-          <FieldError />
-        </TextField>
-
-        <TextField
-          name="taskDescription"
-          value={task.description}
-          onChange={v => updateTask(task.key, { description: v })}
-        >
-          <Label>Description</Label>
-          <TextArea placeholder="Optional description" variant="secondary" />
-        </TextField>
-
-        <Select
-          selectedKey={task.triggerType}
-          onSelectionChange={key => {
-            const triggerType = key as MaintenanceTaskForm['triggerType']
-            const patch: Partial<MaintenanceTaskForm> = { triggerType }
-            if (triggerType === 'hours') patch.triggerCalendarDays = null
-            if (triggerType === 'calendar') patch.triggerHoursInterval = null
-            updateTask(task.key, patch)
-          }}
-        >
-          <Label>Trigger type</Label>
-          <Select.Trigger>
-            <Select.Value />
-            <Select.Indicator />
-          </Select.Trigger>
-          <Select.Popover>
-            <ListBox>
-              {TRIGGER_TYPES.map(t => (
-                <ListBox.Item key={t.id} id={t.id} textValue={t.label}>
-                  {t.label}
-                  <ListBox.ItemIndicator />
-                </ListBox.Item>
-              ))}
-            </ListBox>
-          </Select.Popover>
-        </Select>
-
-        {(showHours || showDays) && (
-          <div className="grid grid-cols-2 gap-3">
-            {showHours && (
-              <NumberField
-                isRequired
-                minValue={1}
-                step={1}
-                value={task.triggerHoursInterval ?? undefined}
-                onChange={v =>
-                  updateTask(task.key, { triggerHoursInterval: v })
-                }
-              >
-                <Label>Every N hours</Label>
-                <NumberField.Group>
-                  <NumberField.DecrementButton />
-                  <NumberField.Input />
-                  <NumberField.IncrementButton />
-                </NumberField.Group>
-                <FieldError />
-              </NumberField>
-            )}
-
-            {showDays && (
-              <NumberField
-                isRequired
-                minValue={1}
-                step={1}
-                value={task.triggerCalendarDays ?? undefined}
-                onChange={v => updateTask(task.key, { triggerCalendarDays: v })}
-              >
-                <Label>Every N days</Label>
-                <NumberField.Group>
-                  <NumberField.DecrementButton />
-                  <NumberField.Input />
-                  <NumberField.IncrementButton />
-                </NumberField.Group>
-                <FieldError />
-              </NumberField>
-            )}
-          </div>
-        )}
-
-        <label className="flex cursor-pointer items-center gap-2 text-sm">
-          <input
-            type="checkbox"
-            checked={task.isOneTime}
-            onChange={e =>
-              updateTask(task.key, { isOneTime: e.target.checked })
-            }
-            className="accent-primary size-4 rounded"
-          />
-          One-time task
-        </label>
-      </Card.Content>
-    </Card>
   )
 }

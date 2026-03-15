@@ -1,5 +1,7 @@
-import { Chip, Tabs } from '@heroui/react'
+import { Button, Chip, Tabs } from '@heroui/react'
 import { createFileRoute } from '@tanstack/react-router'
+import { Pencil } from 'lucide-react'
+import { useState } from 'react'
 
 import {
   getGenerator,
@@ -13,6 +15,8 @@ import { useDrizzleQuery } from '@/lib/hooks/use-drizzle-query'
 import { computeGeneratorStatus } from '@/lib/hooks/use-generator-status'
 import { useUserOrgs } from '@/lib/hooks/use-user-orgs'
 
+import AssignedEmployees from './-components/AssignedEmployees'
+import EditGeneratorModal from './-components/EditGeneratorModal'
 import MaintenancePlans from './-components/MaintenancePlans'
 import RuntimeCard from './-components/RuntimeCard'
 import SessionHistory from './-components/SessionHistory'
@@ -24,8 +28,8 @@ export const Route = createFileRoute(
 })
 
 function GeneratorDetail() {
-  const { generatorId } = Route.useParams()
-  const { userId } = useUserOrgs()
+  const { organizationId, generatorId } = Route.useParams()
+  const { userId, isAdmin } = useUserOrgs()
 
   const { data: [generator] = [] } = useDrizzleQuery(getGenerator(generatorId))
   const { data: sessions } = useDrizzleQuery(getGeneratorSessions(generatorId))
@@ -33,6 +37,8 @@ function GeneratorDetail() {
     getMaintenanceTemplates(generatorId)
   )
   const { data: records } = useDrizzleQuery(getMaintenanceRecords(generatorId))
+
+  const [editModalOpen, setEditModalOpen] = useState(false)
 
   if (!generator) return null
 
@@ -49,12 +55,30 @@ function GeneratorDetail() {
             <p className="text-muted mt-1 text-sm">{generator.description}</p>
           )}
         </div>
-        <Chip size="sm" variant="secondary">
-          {generator.model}
-        </Chip>
+        <div className="flex items-center gap-2">
+          <Chip size="sm" variant="secondary">
+            {generator.model}
+          </Chip>
+          <Button
+            size="sm"
+            variant="ghost"
+            isIconOnly
+            onPress={() => setEditModalOpen(true)}
+            aria-label="Edit generator"
+          >
+            <Pencil size={14} />
+          </Button>
+        </div>
       </div>
 
       <div className="flex flex-col gap-6">
+        <AssignedEmployees
+          organizationId={organizationId}
+          generatorId={generatorId}
+          userId={userId}
+          isAdmin={isAdmin(organizationId)}
+        />
+
         <RuntimeCard
           generator={generator}
           statusInfo={statusInfo}
@@ -68,7 +92,7 @@ function GeneratorDetail() {
                 id="sessions"
                 className="data-[selected=true]:bg-segment data-[selected=true]:shadow-surface"
               >
-                Sessions
+                Runtimes
               </Tabs.Tab>
               <Tabs.Tab
                 id="maintenance"
@@ -80,7 +104,11 @@ function GeneratorDetail() {
           </Tabs.ListContainer>
 
           <Tabs.Panel id="sessions">
-            <SessionHistory sessions={sessions} />
+            <SessionHistory
+              sessions={sessions}
+              userId={userId}
+              generatorId={generatorId}
+            />
           </Tabs.Panel>
 
           <Tabs.Panel id="maintenance">
@@ -94,6 +122,13 @@ function GeneratorDetail() {
           </Tabs.Panel>
         </Tabs>
       </div>
+
+      <EditGeneratorModal
+        isOpen={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        userId={userId}
+        generator={generator}
+      />
     </div>
   )
 }

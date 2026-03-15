@@ -1,6 +1,6 @@
 import { Button, Card, Chip, EmptyState, Separator, Table } from '@heroui/react'
 import { format, parseISO } from 'date-fns'
-import { Wrench } from 'lucide-react'
+import { Pencil, Plus, Wrench } from 'lucide-react'
 import { useState } from 'react'
 
 import type { GeneratorSession } from '@/data/client/db-schema'
@@ -11,6 +11,7 @@ import type {
 import { computeMaintenanceDue } from '@/lib/hooks/use-maintenance-due'
 import type { MaintenanceUrgency } from '@/lib/hooks/use-maintenance-due'
 
+import MaintenanceTemplateModal from './MaintenanceTemplateModal'
 import RecordMaintenanceModal from './RecordMaintenanceModal'
 
 interface MaintenancePlansProps {
@@ -28,14 +29,28 @@ export default function MaintenancePlans({
   userId,
   generatorId
 }: MaintenancePlansProps) {
-  const [modalOpen, setModalOpen] = useState(false)
+  const [recordModalOpen, setRecordModalOpen] = useState(false)
   const [preselectedTemplateId, setPreselectedTemplateId] = useState<
     string | null
   >(null)
 
+  const [templateModalOpen, setTemplateModalOpen] = useState(false)
+  const [editingTemplate, setEditingTemplate] =
+    useState<MaintenanceTemplate | null>(null)
+
   function openRecordModal(templateId: string) {
     setPreselectedTemplateId(templateId)
-    setModalOpen(true)
+    setRecordModalOpen(true)
+  }
+
+  function openCreateTemplate() {
+    setEditingTemplate(null)
+    setTemplateModalOpen(true)
+  }
+
+  function openEditTemplate(template: MaintenanceTemplate) {
+    setEditingTemplate(template)
+    setTemplateModalOpen(true)
   }
 
   return (
@@ -44,6 +59,10 @@ export default function MaintenancePlans({
         <EmptyState>
           <Wrench className="text-muted size-8" />
           <p className="text-muted text-sm">No maintenance plans configured</p>
+          <Button size="sm" onPress={openCreateTemplate}>
+            <Plus size={14} />
+            Add Task
+          </Button>
         </EmptyState>
       ) : (
         <div className="flex flex-col gap-3">
@@ -57,9 +76,19 @@ export default function MaintenancePlans({
                 urgency={dueInfo.urgency}
                 lastPerformedAt={dueInfo.lastPerformedAt}
                 onRecord={() => openRecordModal(template.id)}
+                onEdit={() => openEditTemplate(template)}
               />
             )
           })}
+          <Button
+            size="sm"
+            variant="ghost"
+            className="self-start"
+            onPress={openCreateTemplate}
+          >
+            <Plus size={14} />
+            Add Task
+          </Button>
         </div>
       )}
 
@@ -76,15 +105,26 @@ export default function MaintenancePlans({
       )}
 
       <RecordMaintenanceModal
-        isOpen={modalOpen}
+        isOpen={recordModalOpen}
         onClose={() => {
-          setModalOpen(false)
+          setRecordModalOpen(false)
           setPreselectedTemplateId(null)
         }}
         userId={userId}
         generatorId={generatorId}
         templates={templates}
         preselectedTemplateId={preselectedTemplateId}
+      />
+
+      <MaintenanceTemplateModal
+        isOpen={templateModalOpen}
+        onClose={() => {
+          setTemplateModalOpen(false)
+          setEditingTemplate(null)
+        }}
+        userId={userId}
+        generatorId={generatorId}
+        template={editingTemplate}
       />
     </div>
   )
@@ -94,12 +134,14 @@ function TemplateCard({
   template,
   urgency,
   lastPerformedAt,
-  onRecord
+  onRecord,
+  onEdit
 }: {
   template: MaintenanceTemplate
   urgency: MaintenanceUrgency
   lastPerformedAt: string | null
   onRecord: () => void
+  onEdit: () => void
 }) {
   return (
     <Card>
@@ -123,9 +165,20 @@ function TemplateCard({
               ? format(parseISO(lastPerformedAt), 'MMM d, yyyy')
               : 'Never'}
           </p>
-          <Button size="sm" onPress={onRecord}>
-            Record Maintenance
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              variant="ghost"
+              isIconOnly
+              onPress={onEdit}
+              aria-label="Edit task"
+            >
+              <Pencil size={14} />
+            </Button>
+            <Button size="sm" onPress={onRecord}>
+              Record Maintenance
+            </Button>
+          </div>
         </div>
       </Card.Content>
     </Card>

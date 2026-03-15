@@ -67,3 +67,19 @@ export const logManualSessionSchema = z
   })
 
 export type LogManualSessionInput = z.input<typeof logManualSessionSchema>
+
+export const updateSessionSchema = z
+  .object({
+    startedAt: z.string().datetime(),
+    stoppedAt: z.string().datetime()
+  })
+  .refine(data => data.startedAt < data.stoppedAt, {
+    error: 'Start time must be before end time',
+    path: ['stoppedAt']
+  })
+  .refine(data => new Date(data.stoppedAt) <= new Date(), {
+    error: 'End time cannot be in the future',
+    path: ['stoppedAt']
+  })
+
+export type UpdateSessionInput = z.input<typeof updateSessionSchema>

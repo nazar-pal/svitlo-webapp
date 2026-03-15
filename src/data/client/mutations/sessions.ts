@@ -3,6 +3,8 @@ import { and, eq, isNull } from 'drizzle-orm'
 import { generators, generatorSessions } from '@/data/client/db-schema'
 import { db } from '@/lib/powersync/database'
 
+import { updateSessionSchema } from '@/data/client/validation'
+
 import {
   canAccessGenerator,
   fail,
@@ -144,6 +146,43 @@ export async function logManualSession(
     startedAt,
     stoppedAt
   })
+
+  return ok
+}
+
+export async function updateSession(
+  userId: string,
+  sessionId: string,
+  input: { startedAt: string; stoppedAt: string }
+): Promise<MutationResult> {
+  const parsed = updateSessionSchema.safeParse(input)
+  if (!parsed.success)
+    return fail(parsed.error.issues[0]?.message ?? 'Invalid input')
+
+  const [session] = await db
+    .select()
+    .from(generatorSessions)
+    .where(eq(generatorSessions.id, sessionId))
+    .limit(1)
+
+  if (!session) return fail('Session not found')
+  if (!session.stoppedAt) return fail('Cannot edit an in-progress session')
+
+  const isAdmin = await isGeneratorOrgAdmin(userId, session.generatorId)
+  if (!isAdmin) {
+    if (!(await canAccessGenerator(userId, session.generatorId)))
+      return fail('Not authorized for this generator')
+    if (session.startedByUserId !== userId)
+      return fail('You can only edit your own sessions')
+  }
+
+  await db
+    .update(generatorSessions)
+    .set({
+      startedAt: parsed.data.startedAt,
+      stoppedAt: parsed.data.stoppedAt
+    })
+    .where(eq(generatorSessions.id, sessionId))
 
   return ok
 }
