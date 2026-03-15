@@ -15,7 +15,6 @@ import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as MarketingIndexRouteImport } from './routes/_marketing/index'
 import { Route as ApiSplatRouteImport } from './routes/api.$'
-import { Route as MarketingAboutRouteImport } from './routes/_marketing/about'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
 import { Route as ApiRpcSplatRouteImport } from './routes/api.rpc.$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
@@ -48,11 +47,6 @@ const ApiSplatRoute = ApiSplatRouteImport.update({
   path: '/api/$',
   getParentRoute: () => rootRouteImport
 } as any)
-const MarketingAboutRoute = MarketingAboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => MarketingRoute
-} as any)
 const AuthSignInRoute = AuthSignInRouteImport.update({
   id: '/sign-in',
   path: '/sign-in',
@@ -73,7 +67,6 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/': typeof MarketingIndexRoute
   '/sign-in': typeof AuthSignInRoute
-  '/about': typeof MarketingAboutRoute
   '/api/$': typeof ApiSplatRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -82,7 +75,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof MarketingIndexRoute
   '/sign-in': typeof AuthSignInRoute
-  '/about': typeof MarketingAboutRoute
   '/api/$': typeof ApiSplatRoute
   '/dashboard': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -94,7 +86,6 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/_marketing': typeof MarketingRouteWithChildren
   '/_auth/sign-in': typeof AuthSignInRoute
-  '/_marketing/about': typeof MarketingAboutRoute
   '/api/$': typeof ApiSplatRoute
   '/_marketing/': typeof MarketingIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -107,27 +98,18 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/'
     | '/sign-in'
-    | '/about'
     | '/api/$'
     | '/dashboard/'
     | '/api/auth/$'
     | '/api/rpc/$'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/sign-in'
-    | '/about'
-    | '/api/$'
-    | '/dashboard'
-    | '/api/auth/$'
-    | '/api/rpc/$'
+  to: '/' | '/sign-in' | '/api/$' | '/dashboard' | '/api/auth/$' | '/api/rpc/$'
   id:
     | '__root__'
     | '/dashboard'
     | '/_auth'
     | '/_marketing'
     | '/_auth/sign-in'
-    | '/_marketing/about'
     | '/api/$'
     | '/_marketing/'
     | '/dashboard/'
@@ -188,13 +170,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_marketing/about': {
-      id: '/_marketing/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof MarketingAboutRouteImport
-      parentRoute: typeof MarketingRoute
-    }
     '/_auth/sign-in': {
       id: '/_auth/sign-in'
       path: '/sign-in'
@@ -242,12 +217,10 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface MarketingRouteChildren {
-  MarketingAboutRoute: typeof MarketingAboutRoute
   MarketingIndexRoute: typeof MarketingIndexRoute
 }
 
 const MarketingRouteChildren: MarketingRouteChildren = {
-  MarketingAboutRoute: MarketingAboutRoute,
   MarketingIndexRoute: MarketingIndexRoute
 }
 
