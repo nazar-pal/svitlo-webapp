@@ -1,6 +1,6 @@
-import { postgres } from '@neondatabase/vite-plugin-postgres'
+import { postgresPlugin } from '@neondatabase/vite-plugin-postgres'
 
-export default postgres({
+export default postgresPlugin({
   seed: {
     type: 'sql-script',
     path: 'db/init.sql',

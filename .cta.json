@@ -1,9 +1,9 @@
 {
-  "projectName": "svitlo-webapp",
+  "projectName": "svilto-webapp",
   "mode": "file-router",
   "typescript": true,
-  "packageManager": "bun",
-  "includeExamples": true,
+  "packageManager": "npm",
+  "includeExamples": false,
   "tailwind": true,
   "addOnOptions": {
     "drizzle": {
@@ -11,23 +11,18 @@
     }
   },
   "envVarValues": {},
-  "git": true,
+  "git": false,
   "routerOnly": false,
   "version": 1,
   "framework": "react",
   "chosenAddOns": [
-    "biome",
-    "nitro",
+    "eslint",
     "neon",
-    "drizzle",
-    "t3env",
-    "shadcn",
-    "tRPC",
-    "better-auth",
     "compiler",
-    "form",
-    "mcp",
-    "tanstack-query",
-    "events"
+    "drizzle",
+    "oRPC",
+    "t3env",
+    "better-auth",
+    "tanstack-query"
   ]
 }
