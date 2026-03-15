@@ -8,9 +8,10 @@ import {
   Surface,
   TextArea,
   TextField,
+  Spinner,
   useOverlayState
 } from '@heroui/react'
-import { Plus, Zap } from 'lucide-react'
+import { Plus, Sparkles, Zap } from 'lucide-react'
 import { useState } from 'react'
 
 import { MaintenanceTaskCard } from '@/components/MaintenanceTaskForm'
@@ -18,6 +19,8 @@ import type { MaintenanceTaskFormData } from '@/components/MaintenanceTaskForm'
 import RuntimeLimitsFields from '@/components/RuntimeLimitsFields'
 import { createGeneratorWithMaintenance } from '@/data/client/mutations/generators'
 import { insertGeneratorSchema } from '@/data/client/validation'
+import { asyncTryCatch } from '@/lib/try-catch'
+import { client } from '@/orpc/client'
 
 interface CreateGeneratorModalProps {
   isOpen: boolean
@@ -64,9 +67,39 @@ export default function CreateGeneratorModal({
   // Step 2 - maintenance tasks
   const [tasks, setTasks] = useState<MaintenanceTaskFormData[]>([])
 
+  // AI suggestion
+  const [isSuggesting, setIsSuggesting] = useState(false)
+
   // Global
   const [error, setError] = useState('')
   const [isPending, setIsPending] = useState(false)
+
+  async function handleSuggest() {
+    setIsSuggesting(true)
+    setError('')
+
+    const [err, result] = await asyncTryCatch(
+      client.ai.suggestMaintenancePlan({
+        generatorModel: model,
+        description: description || undefined
+      })
+    )
+
+    setIsSuggesting(false)
+
+    if (err) return setError('Failed to get AI suggestions. Please try again.')
+
+    setMaxRunHours(result.maxConsecutiveRunHours)
+    setRestHours(result.requiredRestHours)
+    setTasks(
+      result.tasks.map(t => ({
+        ...t,
+        key: taskKeyCounter++,
+        triggerHoursInterval: t.triggerHoursInterval,
+        triggerCalendarDays: t.triggerCalendarDays
+      }))
+    )
+  }
 
   function resetForm() {
     setStep(1)
@@ -79,6 +112,7 @@ export default function CreateGeneratorModal({
     setTasks([])
     setError('')
     setIsPending(false)
+    setIsSuggesting(false)
   }
 
   const state = useOverlayState({
@@ -218,6 +252,8 @@ export default function CreateGeneratorModal({
                       updateTask={updateTask}
                       removeTask={removeTask}
                       error={error}
+                      isSuggesting={isSuggesting}
+                      onSuggest={handleSuggest}
                     />
                   </Modal.Body>
                   <Modal.Footer>
@@ -324,6 +360,8 @@ interface StepTwoProps {
   updateTask: (key: number, patch: Partial<MaintenanceTaskFormData>) => void
   removeTask: (key: number) => void
   error: string
+  isSuggesting: boolean
+  onSuggest: () => void
 }
 
 function StepTwoContent({
@@ -337,10 +375,25 @@ function StepTwoContent({
   addTask,
   updateTask,
   removeTask,
-  error
+  error,
+  isSuggesting,
+  onSuggest
 }: StepTwoProps) {
   return (
     <div className="flex flex-col gap-4">
+      <Button variant="secondary" onPress={onSuggest} isPending={isSuggesting}>
+        {({ isPending }) => (
+          <>
+            {isPending ? (
+              <Spinner color="current" size="sm" />
+            ) : (
+              <Sparkles size={16} />
+            )}
+            {isPending ? 'Generating suggestions…' : 'Auto-fill with AI'}
+          </>
+        )}
+      </Button>
+
       <Surface variant="default">
         <div className="flex w-full flex-col gap-4">
           <SectionHeading
