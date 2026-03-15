@@ -1,6 +1,6 @@
 import { Button, Separator } from '@heroui/react'
-import { useParams } from '@tanstack/react-router'
-import { LogOut } from 'lucide-react'
+import { Link, useParams } from '@tanstack/react-router'
+import { LogOut, Settings } from 'lucide-react'
 
 import { authClient } from '@/lib/auth/auth-client'
 import { signOut } from '@/lib/auth/sign-out'
@@ -66,6 +66,20 @@ export default function SidebarContent({ onNavigate }: SidebarContentProps) {
       <SyncStatusIndicator />
 
       <Separator />
+
+      {organizationId && (
+        <div className="px-2 py-1">
+          <Link
+            to="/dashboard/$organizationId/settings"
+            params={{ organizationId }}
+            onClick={onNavigate}
+            className="text-muted hover:text-foreground flex items-center gap-2 rounded-lg px-2 py-2 text-sm no-underline transition-colors"
+          >
+            <Settings size={14} />
+            Settings
+          </Link>
+        </div>
+      )}
 
       {user && (
         <UserProfile

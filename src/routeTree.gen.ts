@@ -21,6 +21,7 @@ import { Route as DashboardOrganizationIdIndexRouteImport } from './routes/dashb
 import { Route as ApiRpcSplatRouteImport } from './routes/api.rpc.$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as DashboardOrganizationIdGeneratorsRouteRouteImport } from './routes/dashboard/$organizationId/generators/route'
+import { Route as DashboardOrganizationIdSettingsIndexRouteImport } from './routes/dashboard/$organizationId/settings/index'
 import { Route as DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteImport } from './routes/dashboard/$organizationId/generators/$generatorId/route'
 import { Route as DashboardOrganizationIdGeneratorsGeneratorIdIndexRouteImport } from './routes/dashboard/$organizationId/generators/$generatorId/index'
 
@@ -85,6 +86,12 @@ const DashboardOrganizationIdGeneratorsRouteRoute =
     path: '/generators',
     getParentRoute: () => DashboardOrganizationIdRouteRoute,
   } as any)
+const DashboardOrganizationIdSettingsIndexRoute =
+  DashboardOrganizationIdSettingsIndexRouteImport.update({
+    id: '/settings/',
+    path: '/settings/',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
 const DashboardOrganizationIdGeneratorsGeneratorIdRouteRoute =
   DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteImport.update({
     id: '/$generatorId',
@@ -111,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/dashboard/$organizationId/': typeof DashboardOrganizationIdIndexRoute
   '/dashboard/$organizationId/generators/$generatorId': typeof DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteWithChildren
+  '/dashboard/$organizationId/settings/': typeof DashboardOrganizationIdSettingsIndexRoute
   '/dashboard/$organizationId/generators/$generatorId/': typeof DashboardOrganizationIdGeneratorsGeneratorIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -122,6 +130,7 @@ export interface FileRoutesByTo {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/dashboard/$organizationId': typeof DashboardOrganizationIdIndexRoute
+  '/dashboard/$organizationId/settings': typeof DashboardOrganizationIdSettingsIndexRoute
   '/dashboard/$organizationId/generators/$generatorId': typeof DashboardOrganizationIdGeneratorsGeneratorIdIndexRoute
 }
 export interface FileRoutesById {
@@ -139,6 +148,7 @@ export interface FileRoutesById {
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/dashboard/$organizationId/': typeof DashboardOrganizationIdIndexRoute
   '/dashboard/$organizationId/generators/$generatorId': typeof DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteWithChildren
+  '/dashboard/$organizationId/settings/': typeof DashboardOrganizationIdSettingsIndexRoute
   '/dashboard/$organizationId/generators/$generatorId/': typeof DashboardOrganizationIdGeneratorsGeneratorIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -155,6 +165,7 @@ export interface FileRouteTypes {
     | '/api/rpc/$'
     | '/dashboard/$organizationId/'
     | '/dashboard/$organizationId/generators/$generatorId'
+    | '/dashboard/$organizationId/settings/'
     | '/dashboard/$organizationId/generators/$generatorId/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -166,6 +177,7 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/api/rpc/$'
     | '/dashboard/$organizationId'
+    | '/dashboard/$organizationId/settings'
     | '/dashboard/$organizationId/generators/$generatorId'
   id:
     | '__root__'
@@ -182,6 +194,7 @@ export interface FileRouteTypes {
     | '/api/rpc/$'
     | '/dashboard/$organizationId/'
     | '/dashboard/$organizationId/generators/$generatorId'
+    | '/dashboard/$organizationId/settings/'
     | '/dashboard/$organizationId/generators/$generatorId/'
   fileRoutesById: FileRoutesById
 }
@@ -280,6 +293,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardOrganizationIdGeneratorsRouteRouteImport
       parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
+    '/dashboard/$organizationId/settings/': {
+      id: '/dashboard/$organizationId/settings/'
+      path: '/settings'
+      fullPath: '/dashboard/$organizationId/settings/'
+      preLoaderRoute: typeof DashboardOrganizationIdSettingsIndexRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
+    }
     '/dashboard/$organizationId/generators/$generatorId': {
       id: '/dashboard/$organizationId/generators/$generatorId'
       path: '/$generatorId'
@@ -330,6 +350,7 @@ const DashboardOrganizationIdGeneratorsRouteRouteWithChildren =
 interface DashboardOrganizationIdRouteRouteChildren {
   DashboardOrganizationIdGeneratorsRouteRoute: typeof DashboardOrganizationIdGeneratorsRouteRouteWithChildren
   DashboardOrganizationIdIndexRoute: typeof DashboardOrganizationIdIndexRoute
+  DashboardOrganizationIdSettingsIndexRoute: typeof DashboardOrganizationIdSettingsIndexRoute
 }
 
 const DashboardOrganizationIdRouteRouteChildren: DashboardOrganizationIdRouteRouteChildren =
@@ -337,6 +358,8 @@ const DashboardOrganizationIdRouteRouteChildren: DashboardOrganizationIdRouteRou
     DashboardOrganizationIdGeneratorsRouteRoute:
       DashboardOrganizationIdGeneratorsRouteRouteWithChildren,
     DashboardOrganizationIdIndexRoute: DashboardOrganizationIdIndexRoute,
+    DashboardOrganizationIdSettingsIndexRoute:
+      DashboardOrganizationIdSettingsIndexRoute,
   }
 
 const DashboardOrganizationIdRouteRouteWithChildren =
