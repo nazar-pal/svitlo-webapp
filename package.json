@@ -20,9 +20,14 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.43",
+    "@heroui/react": "^3.0.0-rc.1",
+    "@heroui/styles": "^3.0.0-rc.1",
+    "@journeyapps/wa-sqlite": "^1.5.0",
     "@modelcontextprotocol/sdk": "^1.27.1",
     "@neondatabase/serverless": "^1.0.2",
     "@neondatabase/vite-plugin-postgres": "^0.7.0",
+    "@powersync/web": "^1.36.0",
     "@t3-oss/env-core": "^0.13.10",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/ai": "latest",
@@ -58,11 +63,16 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "streamdown": "^2.3.0",
-    "superjson": "^2.2.2",
+    "superjson": "^2.2.6",
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.1.18",
     "tailwindcss-animate": "^1.0.7",
     "tw-animate-css": "^1.3.6",
+    "jose": "^6.2.1",
+    "date-fns": "^4.1.0",
+    "framer-motion": "^12.36.0",
+    "@powersync/drizzle-driver": "^0.7.3",
+    "zustand": "^5.0.11",
     "zod": "^4.3.6"
   },
   "devDependencies": {
