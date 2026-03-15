@@ -2,7 +2,7 @@ import { NeonDbError } from '@neondatabase/serverless'
 import { SignJWT } from 'jose'
 import { z } from 'zod'
 
-import { env } from '@/env'
+import type { WriteContext } from '@/data/server/api/routers/powersync/handlers'
 import {
   handleGeneratorSessions,
   handleGeneratorUserAssignments,
@@ -14,7 +14,7 @@ import {
   handleOrganizations,
   handleUser
 } from '@/data/server/api/routers/powersync/handlers'
-import type { WriteContext } from '@/data/server/api/routers/powersync/handlers'
+import { env } from '@/env'
 
 import { protectedProcedure } from '#/orpc/procedures'
 

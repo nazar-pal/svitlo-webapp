@@ -5,12 +5,12 @@ import {
   organizations
 } from '@/data/client/db-schema/organizations'
 import { useDrizzleQuery } from '@/lib/hooks/use-drizzle-query'
-import { useLocalUser } from '@/lib/powersync/use-local-user'
+import { usePowerSync } from '@/lib/powersync/context'
 import { db } from '@/lib/powersync/database'
 
 export function useUserOrgs() {
-  const localUser = useLocalUser()
-  const userId = localUser?.id ?? ''
+  const { userId: ctxUserId } = usePowerSync()
+  const userId = ctxUserId ?? ''
 
   const { data: memberOrgIds } = useDrizzleQuery(
     userId

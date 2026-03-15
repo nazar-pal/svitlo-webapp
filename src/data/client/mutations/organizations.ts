@@ -25,11 +25,14 @@ export async function createOrganization(
   const parsed = insertOrganizationSchema.safeParse(input)
   if (!parsed.success) return fail(parsed.error.issues[0].message)
 
+  const id = newId()
+  const createdAt = nowISO()
+
   await db.insert(organizations).values({
-    id: newId(),
+    id,
     name: parsed.data.name,
     adminUserId: userId,
-    createdAt: nowISO()
+    createdAt
   })
 
   return ok

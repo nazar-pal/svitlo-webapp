@@ -1,12 +1,20 @@
-import { createFileRoute, Link, Outlet, redirect } from '@tanstack/react-router'
-import { Avatar, Button, Chip, Separator } from '@heroui/react'
-import { LogOut } from 'lucide-react'
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { Button, Chip, Drawer, useOverlayState } from '@heroui/react'
+import { Menu } from 'lucide-react'
+import { z } from 'zod'
+
 import { authClient } from '@/lib/auth/auth-client'
-import { signOut } from '@/lib/auth/sign-out'
 import { getServerSession } from '@/lib/auth/get-session'
-import ThemeToggle from '@/components/ThemeToggle'
+import { PowerSyncProvider } from '@/lib/powersync/context'
+import SidebarContent from './-sidebar/SidebarContent'
+
+const dashboardSearchSchema = z.object({
+  modal: z.enum(['create-org']).optional()
+})
 
 export const Route = createFileRoute('/dashboard')({
+  validateSearch: dashboardSearchSchema,
+  ssr: false,
   beforeLoad: async () => {
     const session = await getServerSession()
     if (!session) throw redirect({ to: '/sign-in' })
@@ -16,69 +24,45 @@ export const Route = createFileRoute('/dashboard')({
 
 function DashboardLayout() {
   const { data: session } = authClient.useSession()
-  const user = session?.user
+  const drawerState = useOverlayState()
 
   return (
-    <div className="flex min-h-screen">
-      <aside className="border-border bg-surface flex w-64 flex-shrink-0 flex-col border-r">
-        <div className="p-4">
-          <Link to="/dashboard" className="inline-block no-underline">
-            <Chip color="accent" variant="secondary" size="sm">
-              Svitlo
-            </Chip>
-          </Link>
-        </div>
+    <PowerSyncProvider userId={session?.user?.id ?? null}>
+      <div className="flex min-h-screen">
+        <aside className="bg-surface border-border hidden w-72 flex-shrink-0 flex-col border-r md:flex">
+          <SidebarContent />
+        </aside>
 
-        <Separator />
+        <header className="border-border bg-surface flex items-center gap-3 border-b p-3 md:hidden">
+          <Drawer state={drawerState}>
+            <Button
+              variant="ghost"
+              size="sm"
+              isIconOnly
+              aria-label="Open menu"
+              onPress={drawerState.open}
+            >
+              <Menu size={20} />
+            </Button>
+            <Drawer.Backdrop>
+              <Drawer.Content placement="left" className="w-72">
+                <Drawer.Dialog>
+                  <Drawer.Body className="p-0">
+                    <SidebarContent onNavigate={drawerState.close} />
+                  </Drawer.Body>
+                </Drawer.Dialog>
+              </Drawer.Content>
+            </Drawer.Backdrop>
+          </Drawer>
+          <Chip color="accent" variant="secondary" size="sm">
+            Svitlo
+          </Chip>
+        </header>
 
-        <nav className="flex-1 p-4">
-          <Link
-            to="/dashboard"
-            className="link hover:text-accent block py-2 no-underline"
-            activeOptions={{ exact: true }}
-            activeProps={{ className: 'link text-accent' }}
-          >
-            Dashboard
-          </Link>
-        </nav>
-
-        <Separator />
-
-        <div className="flex items-center gap-3 p-4">
-          {user && (
-            <>
-              <Avatar size="sm">
-                {user.image ? <Avatar.Image src={user.image} alt="" /> : null}
-                <Avatar.Fallback>
-                  {user.name?.charAt(0).toUpperCase() || 'U'}
-                </Avatar.Fallback>
-              </Avatar>
-              <div className="min-w-0 flex-1">
-                <p className="text-foreground m-0 truncate text-sm font-medium">
-                  {user.name}
-                </p>
-                <p className="text-muted m-0 truncate text-xs">{user.email}</p>
-              </div>
-              <div className="flex items-center gap-1">
-                <ThemeToggle />
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  isIconOnly
-                  onPress={() => void signOut()}
-                  aria-label="Sign out"
-                >
-                  <LogOut size={16} />
-                </Button>
-              </div>
-            </>
-          )}
-        </div>
-      </aside>
-
-      <main className="flex-1 overflow-auto p-8">
-        <Outlet />
-      </main>
-    </div>
+        <main className="flex-1 overflow-auto p-8">
+          <Outlet />
+        </main>
+      </div>
+    </PowerSyncProvider>
   )
 }
