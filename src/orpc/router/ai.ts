@@ -1,7 +1,5 @@
 import { z } from 'zod'
 
-import { maintenanceAgent } from '@/data/server/ai/maintenance-agent'
-
 import { protectedProcedure } from '#/orpc/procedures'
 
 const maintenanceSuggestionSchema = z.object({
@@ -36,6 +34,8 @@ export const suggestMaintenancePlan = protectedProcedure
       .filter(Boolean)
       .join('\n')
 
+    const { maintenanceAgent } =
+      await import('@/data/server/ai/maintenance-agent')
     const result = await maintenanceAgent.generate(prompt, {
       structuredOutput: {
         schema: maintenanceSuggestionSchema,

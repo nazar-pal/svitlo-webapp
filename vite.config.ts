@@ -13,8 +13,9 @@ import { nitro } from 'nitro/vite'
 import neon from './neon-vite-plugin.ts'
 
 function clientOnly(plugin: PluginOption): PluginOption {
-  if (!plugin || typeof plugin !== 'object' || Array.isArray(plugin)) return plugin
-  return { ...plugin, applyToEnvironment: (env) => env.name !== 'nitro' }
+  if (!plugin || typeof plugin !== 'object' || Array.isArray(plugin))
+    return plugin
+  return { ...plugin, applyToEnvironment: env => env.name !== 'nitro' }
 }
 
 const config = defineConfig({
@@ -26,7 +27,15 @@ const config = defineConfig({
     clientOnly(wasm()),
     clientOnly(topLevelAwait()),
     tanstackStart(),
-    nitro({ preset: 'vercel' }),
+    nitro({
+      preset: 'vercel',
+      rollupConfig: {
+        output: {
+          banner:
+            'import { createRequire as __createRequire } from "module"; if (typeof globalThis.require === "undefined") { globalThis.require = __createRequire(import.meta.url); }'
+        }
+      }
+    }),
     viteReact({
       babel: {
         plugins: ['babel-plugin-react-compiler']
