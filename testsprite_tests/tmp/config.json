@@ -1,0 +1,20 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:3000",
+  "loginUser": "nanchick2000@gmail.com",
+  "loginPassword": "Qwerty1234567$",
+  "executionArgs": {
+    "projectName": "svitlo-webapp",
+    "projectPath": "/Users/nazar/GitHub/svitlo-webapp",
+    "testIds": [],
+    "additionalInstruction": "",
+    "serverMode": "development",
+    "envs": {
+      "API_KEY": "sk-user-MYJOph9V3EhonhTMaFO2ZhfwFgu0lxdB7WKQf6C7RXTYPhvnTteBUUQAnhUw2h3J-a6qMvcQCM6tTFLCHgU5gKkoh4jOEZMFkjyV3hwz9t_o3KR-ziPmFBg6Hxe3zJSWY1Q"
+    }
+  },
+  "serverPort": 62567,
+  "proxy": "http://f7c21cb8-79b9-4751-99d5-4438540d087f:Dw0j0ZqMJ4JtNxsKISaj9prQei1x9loJ@tun.testsprite.com:8080"
+}

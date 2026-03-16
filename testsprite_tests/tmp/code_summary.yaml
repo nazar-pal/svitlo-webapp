@@ -1,0 +1,241 @@
+version: "2"
+type: frontend
+tech_stack:
+  - TypeScript 5.7
+  - React 19.2 with TanStack Start (Vite 7)
+  - HeroUI 3.0 (rc.1) with Tailwind CSS 4
+  - PowerSync (local-first SQLite sync), Better Auth, oRPC, Drizzle ORM, Neon PostgreSQL, Zod validation
+routes:
+  - path: /
+    file: src/routes/_marketing/index.tsx
+    auth_required: false
+    description: Landing page with features overview and call-to-action to sign in
+  - path: /sign-in
+    file: src/routes/_auth/sign-in.tsx
+    auth_required: false
+    description: Combined sign-in and sign-up form with email and password
+  - path: /dashboard
+    file: src/routes/dashboard/index.tsx
+    auth_required: true
+    description: Dashboard home - redirects to first org or shows welcome prompt
+  - path: /dashboard/:organizationId
+    file: src/routes/dashboard/$organizationId/index.tsx
+    auth_required: true
+    description: Organization dashboard with active sessions, generators, alerts, upcoming maintenance
+  - path: /dashboard/:organizationId/settings
+    file: src/routes/dashboard/$organizationId/settings/index.tsx
+    auth_required: true
+    description: Organization settings - name, members, invitations management
+  - path: /dashboard/:organizationId/generators/:generatorId
+    file: src/routes/dashboard/$organizationId/generators/$generatorId/index.tsx
+    auth_required: true
+    description: Generator detail page with runtime tracking, session history, maintenance plans
+features:
+  - name: User Authentication
+    description: Email/password sign-in and sign-up with session persistence via Better Auth
+    files:
+      - src/routes/_auth/sign-in.tsx
+      - src/lib/auth/auth-client.ts
+      - src/lib/auth/sign-out.ts
+      - src/data/server/auth.ts
+    entry_route: /sign-in
+    user_interactions:
+      - Click "Sign Up" tab to switch to registration mode
+      - Fill name input field
+      - Fill email input field
+      - Fill password input field
+      - Click submit button to sign up
+      - Click "Sign In" tab to switch to login mode
+      - Fill email input field
+      - Fill password input field
+      - Click submit button to sign in
+      - See error message on invalid credentials
+    api_calls:
+      - method: POST
+        endpoint: /api/auth/sign-up/email
+      - method: POST
+        endpoint: /api/auth/sign-in/email
+    auth_required: false
+  - name: Organization Management
+    description: Create organizations, manage members, invite team members, switch between orgs
+    files:
+      - src/routes/dashboard/$organizationId/settings/index.tsx
+      - src/routes/dashboard/-sidebar/CreateOrganizationModal.tsx
+      - src/routes/dashboard/-sidebar/OrganizationSelector.tsx
+      - src/data/client/mutations/organizations.ts
+    entry_route: /dashboard/:organizationId/settings
+    user_interactions:
+      - Create new organization from sidebar
+      - Switch between organizations using dropdown
+      - View organization members list
+      - Invite member by entering email address (admin only)
+      - Cancel pending invitation (admin only)
+      - Remove member from organization (admin only)
+    api_calls:
+      - method: POST
+        endpoint: /api/auth/organization/create
+      - method: POST
+        endpoint: /api/auth/organization/invite-member
+      - method: POST
+        endpoint: /api/auth/organization/cancel-invitation
+      - method: POST
+        endpoint: /api/auth/organization/remove-member
+    auth_required: true
+  - name: Generator CRUD
+    description: Create, edit, and configure generators with runtime limits and maintenance thresholds
+    files:
+      - src/routes/dashboard/-sidebar/CreateGeneratorModal.tsx
+      - src/routes/dashboard/$organizationId/generators/$generatorId/-components/EditGeneratorModal.tsx
+      - src/data/client/mutations/generators.ts
+      - src/data/client/validation/generators.ts
+    entry_route: /dashboard/:organizationId/generators/:generatorId
+    user_interactions:
+      - Click plus button in sidebar to open create generator modal
+      - Fill generator title, model, and description
+      - Set max consecutive run hours and required rest hours
+      - Set runtime warning threshold percentage
+      - Click save to create generator
+      - Click edit button on generator detail page
+      - Modify generator fields and save changes
+    api_calls: []
+    auth_required: true
+  - name: Runtime Session Tracking
+    description: Start and stop generator sessions, log manual sessions, view session history with elapsed time
+    files:
+      - src/routes/dashboard/$organizationId/generators/$generatorId/-components/RuntimeCard.tsx
+      - src/routes/dashboard/$organizationId/generators/$generatorId/-components/SessionHistory.tsx
+      - src/routes/dashboard/$organizationId/generators/$generatorId/-components/RuntimeEntryModal.tsx
+      - src/data/client/mutations/sessions.ts
+    entry_route: /dashboard/:organizationId/generators/:generatorId
+    user_interactions:
+      - Click play button to start a new session
+      - See live elapsed time counter while session is running
+      - See runtime progress bar against max consecutive hours
+      - Click stop button to end the current session
+      - Click log manual session button
+      - Enter past start and stop times for manual session
+      - View session history table with dates and durations
+      - Edit past session times
+      - Delete past sessions
+    api_calls: []
+    auth_required: true
+  - name: Generator Status Monitoring
+    description: View generator status (running, resting, available) with rest period countdown and attention alerts
+    files:
+      - src/lib/hooks/use-generator-status.ts
+      - src/lib/hooks/use-rest-countdown.ts
+      - src/routes/dashboard/$organizationId/-components/AttentionRequired.tsx
+      - src/routes/dashboard/$organizationId/-components/ActiveSessionCard.tsx
+    entry_route: /dashboard/:organizationId
+    user_interactions:
+      - View generator status as colored indicator dot in sidebar
+      - See active session card on dashboard with elapsed time
+      - See attention required alerts for generators near run limit or resting
+      - Click alert to navigate to generator detail
+    api_calls: []
+    auth_required: true
+  - name: Maintenance Planning and Tracking
+    description: Create maintenance templates triggered by run hours or calendar days, record maintenance completion
+    files:
+      - src/routes/dashboard/$organizationId/generators/$generatorId/-components/MaintenancePlans.tsx
+      - src/routes/dashboard/$organizationId/generators/$generatorId/-components/MaintenanceTemplateModal.tsx
+      - src/routes/dashboard/$organizationId/generators/$generatorId/-components/RecordMaintenanceModal.tsx
+      - src/data/client/mutations/maintenance.ts
+      - src/data/client/validation/maintenance.ts
+    entry_route: /dashboard/:organizationId/generators/:generatorId
+    user_interactions:
+      - Click Maintenance tab on generator detail page
+      - Click add maintenance template button
+      - Enter task name and description
+      - Select trigger type (run hours, calendar days, or both)
+      - Set trigger interval values
+      - Toggle one-time vs recurring
+      - Save maintenance template
+      - View template cards with due status indicators
+      - Click record button to log maintenance completion
+      - Enter notes when recording maintenance
+      - Edit existing template
+      - Delete template
+    api_calls: []
+    auth_required: true
+  - name: AI Maintenance Suggestions
+    description: Generate maintenance plans from generator model using Google Gemini AI with web search
+    files:
+      - src/routes/dashboard/-sidebar/CreateGeneratorModal.tsx
+      - src/data/server/ai/maintenance-agent.ts
+      - src/orpc/router/ai.ts
+    entry_route: /dashboard
+    user_interactions:
+      - Fill in generator model in creation modal
+      - Click generate suggestions button
+      - Wait for AI to return maintenance plan suggestions
+      - Review and edit suggested values
+      - Confirm and save generator with suggested maintenance templates
+    api_calls:
+      - method: POST
+        endpoint: /api/rpc/ai.suggestMaintenancePlan
+    auth_required: true
+  - name: Employee Assignment
+    description: Assign organization members to specific generators for access control
+    files:
+      - src/routes/dashboard/$organizationId/generators/$generatorId/-components/AssignedEmployees.tsx
+      - src/data/client/mutations/assignments.ts
+    entry_route: /dashboard/:organizationId/generators/:generatorId
+    user_interactions:
+      - View assigned employees list on generator detail page
+      - Select member from dropdown to assign (admin only)
+      - Click unassign button to remove member (admin only)
+      - Confirm unassignment in dialog
+    api_calls: []
+    auth_required: true
+  - name: Dashboard Overview
+    description: Central dashboard showing active sessions, assigned generators, alerts, and upcoming maintenance
+    files:
+      - src/routes/dashboard/$organizationId/index.tsx
+      - src/routes/dashboard/$organizationId/-components/MyGeneratorsList.tsx
+      - src/routes/dashboard/$organizationId/-components/UpcomingMaintenance.tsx
+    entry_route: /dashboard/:organizationId
+    user_interactions:
+      - View active session card with elapsed time and stop button
+      - See list of assigned generators with status dots
+      - Start or stop generator from quick list
+      - Click generator to navigate to detail page
+      - See attention required section with alerts
+      - See upcoming maintenance ranked by urgency
+      - Click maintenance item to navigate to generator
+    api_calls: []
+    auth_required: true
+  - name: Sidebar Navigation
+    description: Sidebar with organization switcher, navigation links, generator list, pending invitations, and user profile
+    files:
+      - src/routes/dashboard/-sidebar/SidebarContent.tsx
+      - src/routes/dashboard/-sidebar/OrganizationSelector.tsx
+      - src/routes/dashboard/-sidebar/GeneratorList.tsx
+      - src/routes/dashboard/-sidebar/InvitationList.tsx
+      - src/routes/dashboard/-sidebar/UserProfile.tsx
+    entry_route: /dashboard
+    user_interactions:
+      - Switch organization from dropdown
+      - Click Dashboard or Settings navigation links
+      - See generator list with status indicator dots
+      - Click generator to navigate to detail
+      - Click plus button to create new generator
+      - See pending invitations with org name and inviter
+      - Accept or reject invitation
+      - Toggle theme (light/dark)
+      - Sign out from user profile menu
+    api_calls: []
+    auth_required: true
+known_limitations:
+  - issue: No generator deletion feature visible in UI
+    location: src/data/client/mutations/generators.ts
+    impact: Users cannot delete generators, only edit them
+  - issue: No search or filter for generators or maintenance tasks
+    location: src/routes/dashboard/$organizationId/index.tsx
+    impact: Users with many generators must scroll to find items
+  - issue: No push notifications or email alerts for maintenance due dates
+    location: src/routes/dashboard/$organizationId/-components/AttentionRequired.tsx
+    impact: Users must check the dashboard manually for alerts
+  - issue: No organization deletion feature
+    location: src/data/client/mutations/organizations.ts
+    impact: Organizations cannot be removed once created

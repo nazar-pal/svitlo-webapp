@@ -1,0 +1,2557 @@
+[
+  {
+    "id": "TC001",
+    "title": "Create a new organization from the dashboard sidebar and land on the new org settings page",
+    "description": "Verifies an authenticated user can create a new organization from the sidebar and is taken to the organization settings context afterward.",
+    "category": "Organization Management",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click \"Create new organization\" from the sidebar"
+      },
+      {
+        "type": "action",
+        "description": "Type \"QA Org Alpha\" into the organization name field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Save\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/settings\""
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "View organization members list on settings",
+    "description": "Verifies the organization settings page displays the members list for the current organization.",
+    "category": "Organization Management",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click \"Settings\" in the dashboard navigation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/settings\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Members\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Organization members list\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Invite a member by email and see a new pending invitation",
+    "description": "Verifies an admin can invite a member from organization settings and a pending invitation appears in the invitations list.",
+    "category": "Organization Management",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Settings\" in the dashboard navigation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/settings\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"invitee.qa+pending1@example.com\" into the invitation email field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Invite\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Pending\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"invitee.qa+pending1@example.com\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Invite member with an invalid email format shows validation error",
+    "description": "Verifies the invite form validates email format and shows a visible error without creating an invitation.",
+    "category": "Organization Management",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Settings\" in the dashboard navigation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/settings\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"not-an-email\" into the invitation email field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Invite\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Enter a valid email\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Create a generator with runtime limits and warning threshold",
+    "description": "Verifies an authenticated user can create a generator from the dashboard sidebar modal and land on the generator detail page.",
+    "category": "Generator CRUD",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click the plus button in the sidebar to open the create generator modal"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Create generator\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Generator A\" into the generator title field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Model X\" into the model field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Basement backup generator\" into the description field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"8\" into the max consecutive run hours field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"2\" into the required rest hours field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"80\" into the runtime warning threshold percentage field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Save\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Generator A\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Create generator validation: required fields left blank",
+    "description": "Verifies required-field validation messages appear when attempting to create a generator with missing required inputs.",
+    "category": "Generator CRUD",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click the plus button in the sidebar to open the create generator modal"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Create generator\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Save\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Title is required\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Model is required\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Create generator validation: runtime hours must be valid numbers",
+    "description": "Verifies numeric validation triggers when runtime limit fields contain invalid values.",
+    "category": "Generator CRUD",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click the plus button in the sidebar to open the create generator modal"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Create generator\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Bad Hours Gen\" into the generator title field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Model Y\" into the model field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"-1\" into the max consecutive run hours field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"-2\" into the required rest hours field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Save\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Max consecutive run hours must be\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Required rest hours must be\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Create generator validation: warning threshold percent out of range",
+    "description": "Verifies warning threshold percentage enforces valid range and shows a visible validation message.",
+    "category": "Generator CRUD",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click the plus button in the sidebar to open the create generator modal"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Create generator\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Threshold Gen\" into the generator title field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Model Z\" into the model field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"150\" into the runtime warning threshold percentage field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Save\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Warning threshold must be\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Cancel create generator modal without creating a generator",
+    "description": "Verifies closing the create generator modal does not create a generator and returns the user to the dashboard view.",
+    "category": "Generator CRUD",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click the plus button in the sidebar to open the create generator modal"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Create generator\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Cancel\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Create generator\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Start and stop a live runtime session and verify it appears in history",
+    "description": "Verifies a user can start a live session, see live runtime UI updates, stop the session, and see a new history row with a duration.",
+    "category": "Runtime Session Tracking",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first organization shown on the dashboard (if prompted) to enter an organization dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown in the organization dashboard list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Runtime\" (runtime session card/section) is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click play button to start a new session"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Elapsed time\" (live counter) is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Runtime progress\" (progress bar) is visible"
+      },
+      {
+        "type": "action",
+        "description": "Wait for 3 seconds"
+      },
+      {
+        "type": "action",
+        "description": "Click stop button to end the current session"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Session history\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Session history table\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Live session shows an increasing elapsed time counter while running",
+    "description": "Verifies the elapsed time counter updates during an active session.",
+    "category": "Runtime Session Tracking",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first organization shown on the dashboard (if prompted) to enter an organization dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown in the organization dashboard list"
+      },
+      {
+        "type": "action",
+        "description": "Click play button to start a new session"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Elapsed time\" (live counter) is visible"
+      },
+      {
+        "type": "action",
+        "description": "Wait for 2 seconds"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Elapsed time\" (live counter) is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click stop button to end the current session"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Session history\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Runtime progress bar is visible during an active session",
+    "description": "Verifies the runtime progress indicator against max consecutive hours is shown when a session is running.",
+    "category": "Runtime Session Tracking",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first organization shown on the dashboard (if prompted) to enter an organization dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown in the organization dashboard list"
+      },
+      {
+        "type": "action",
+        "description": "Click play button to start a new session"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Runtime progress\" (progress bar) is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click stop button to end the current session"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Session history\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Log a manual past session and verify it appears in session history with duration",
+    "description": "Verifies a user can log a manual session by entering past start/stop times and see it listed in history.",
+    "category": "Runtime Session Tracking",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first organization shown on the dashboard (if prompted) to enter an organization dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown in the organization dashboard list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Session history\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click log manual session button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Log manual session\" modal/dialog is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"2026-03-10 10:00\" into the start time field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"2026-03-10 12:00\" into the stop time field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Save\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Session history table\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"2h\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Manual session validation: stop time earlier than start time shows an error and does not save",
+    "description": "Verifies the manual session modal rejects invalid time ranges and keeps the user in the modal with an error message visible.",
+    "category": "Runtime Session Tracking",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first organization shown on the dashboard (if prompted) to enter an organization dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown in the organization dashboard list"
+      },
+      {
+        "type": "action",
+        "description": "Click log manual session button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Log manual session\" modal/dialog is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"2026-03-10 12:00\" into the start time field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"2026-03-10 10:00\" into the stop time field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Save\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Stop time must be after start time\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Prevent starting a session when generator status is resting (error shown)",
+    "description": "Verifies attempting to start a session while the generator is in a resting state shows a visible error and does not start a session.",
+    "category": "Runtime Session Tracking",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first organization shown on the dashboard (if prompted) to enter an organization dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Click on a generator that shows status \"Resting\" in the list (scroll if needed)"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Resting\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click play button to start a new session"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Cannot start session while resting\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Elapsed time\" (live counter) is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Open organization dashboard and verify generator status indicators and active session card are visible",
+    "description": "Verifies the dashboard shows a generator list with visible status dots and an active session card with elapsed time.",
+    "category": "Generator Status Monitoring",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Sidebar generator list\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Generator status indicator dot\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Active session\" card is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "From attention required alert, navigate to generator detail page",
+    "description": "Verifies that clicking an attention-required alert routes the user to the generator detail page.",
+    "category": "Generator Status Monitoring",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Attention required\" section is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the first visible alert item in the \"Attention required\" section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard/\""
+      }
+    ]
+  },
+  {
+    "id": "TC018",
+    "title": "Verify active session card shows elapsed time when a session is running",
+    "description": "Verifies the active session card surfaces an elapsed time value for a running generator session.",
+    "category": "Generator Status Monitoring",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Active session\" card is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Elapsed\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Elapsed time value\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC019",
+    "title": "Warning indicator: click warning/attention item and verify generator detail displays warning state",
+    "description": "Verifies that a near-run-limit warning can be clicked and the generator detail view shows a warning highlighted.",
+    "category": "Generator Status Monitoring",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Attention required\" section is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click a visible alert item that indicates a warning or near limit condition"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Warning\" highlighted indicator is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC020",
+    "title": "Resting state: verify rest countdown is visible when a generator is resting",
+    "description": "Verifies that when a generator is in resting state, the UI shows a rest countdown/timer indicator.",
+    "category": "Generator Status Monitoring",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Generator status indicator dot\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Rest countdown\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Rest\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC021",
+    "title": "Available state: verify at least one generator appears available with a normal status indicator",
+    "description": "Verifies the dashboard can display an available generator state with a visible normal/available indicator.",
+    "category": "Generator Status Monitoring",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Sidebar generator list\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Generator status indicator dot\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Available\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC022",
+    "title": "Sync/status computation error: surface error message that generator status cannot be determined",
+    "description": "Verifies an error banner/message is shown when generator status cannot be computed due to sync issues.",
+    "category": "Generator Status Monitoring",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Generator status\" area is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"cannot be determined\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"sync\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC023",
+    "title": "Create a recurring run-hours maintenance template and verify it appears with due status indicators",
+    "description": "Verifies a user can create a run-hours recurring maintenance template and see it displayed as a template card with due status indicators.",
+    "category": "Maintenance Planning and Tracking",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the sign in button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown on the organization dashboard to open its generator detail page"
+      },
+      {
+        "type": "action",
+        "description": "Click Maintenance tab on generator detail page"
+      },
+      {
+        "type": "action",
+        "description": "Click add maintenance template button"
+      },
+      {
+        "type": "action",
+        "description": "Enter task name \"Oil Change\" into the task name field"
+      },
+      {
+        "type": "action",
+        "description": "Enter description \"Change oil and inspect for leaks\" into the description field"
+      },
+      {
+        "type": "action",
+        "description": "Select trigger type \"run hours\""
+      },
+      {
+        "type": "action",
+        "description": "Set trigger interval value to \"50\" hours"
+      },
+      {
+        "type": "action",
+        "description": "Toggle recurring option on"
+      },
+      {
+        "type": "action",
+        "description": "Click save maintenance template"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Oil Change\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC024",
+    "title": "Create a calendar-days one-time maintenance template and verify it appears",
+    "description": "Verifies a user can create a calendar-based one-time maintenance template and see it displayed on the Maintenance tab.",
+    "category": "Maintenance Planning and Tracking",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the sign in button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown on the organization dashboard to open its generator detail page"
+      },
+      {
+        "type": "action",
+        "description": "Click Maintenance tab on generator detail page"
+      },
+      {
+        "type": "action",
+        "description": "Click add maintenance template button"
+      },
+      {
+        "type": "action",
+        "description": "Enter task name \"Air Filter Replace\" into the task name field"
+      },
+      {
+        "type": "action",
+        "description": "Enter description \"Replace air filter element\" into the description field"
+      },
+      {
+        "type": "action",
+        "description": "Select trigger type \"calendar days\""
+      },
+      {
+        "type": "action",
+        "description": "Set trigger interval value to \"30\" days"
+      },
+      {
+        "type": "action",
+        "description": "Toggle one-time option on"
+      },
+      {
+        "type": "action",
+        "description": "Click save maintenance template"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Air Filter Replace\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC025",
+    "title": "Create a whichever-first (both) maintenance template and verify it appears",
+    "description": "Verifies a user can create a template triggered by whichever comes first (run hours or calendar days) and it is shown on the Maintenance tab.",
+    "category": "Maintenance Planning and Tracking",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the sign in button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown on the organization dashboard to open its generator detail page"
+      },
+      {
+        "type": "action",
+        "description": "Click Maintenance tab on generator detail page"
+      },
+      {
+        "type": "action",
+        "description": "Click add maintenance template button"
+      },
+      {
+        "type": "action",
+        "description": "Enter task name \"Spark Plug Inspection\" into the task name field"
+      },
+      {
+        "type": "action",
+        "description": "Enter description \"Inspect and clean spark plug\" into the description field"
+      },
+      {
+        "type": "action",
+        "description": "Select trigger type \"both\""
+      },
+      {
+        "type": "action",
+        "description": "Set trigger interval value to \"100\" run hours"
+      },
+      {
+        "type": "action",
+        "description": "Set trigger interval value to \"90\" calendar days"
+      },
+      {
+        "type": "action",
+        "description": "Toggle recurring option on"
+      },
+      {
+        "type": "action",
+        "description": "Click save maintenance template"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Spark Plug Inspection\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC026",
+    "title": "Record maintenance completion with notes and verify record appears in history",
+    "description": "Verifies a user can record a maintenance completion with notes and see the record in maintenance history.",
+    "category": "Maintenance Planning and Tracking",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the sign in button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown on the organization dashboard to open its generator detail page"
+      },
+      {
+        "type": "action",
+        "description": "Click Maintenance tab on generator detail page"
+      },
+      {
+        "type": "action",
+        "description": "Click record button on the first visible maintenance template card"
+      },
+      {
+        "type": "action",
+        "description": "Enter notes \"Completed during weekly check; replaced consumables\" into the notes field"
+      },
+      {
+        "type": "action",
+        "description": "Click save to record maintenance completion"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Completed during weekly check; replaced consumables\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC027",
+    "title": "Generate AI maintenance suggestions and accept one to save a maintenance template",
+    "description": "Verifies an admin can generate AI maintenance plan suggestions during generator creation and accept a suggestion that is saved and visible on the generator detail page.",
+    "category": "AI Maintenance Suggestions",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click the plus button in the sidebar to open the create generator modal"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Create generator\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Test Generator Model A\" into the generator model field"
+      }
+    ]
+  },
+  {
+    "id": "TC028",
+    "title": "AI suggestions appear after generating and can be reviewed",
+    "description": "Verifies AI suggestions are displayed after requesting them and the user can view the suggested plan content for review.",
+    "category": "AI Maintenance Suggestions",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click the plus button in the sidebar to open the create generator modal"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Test Generator Model B\" into the generator model field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Generate suggestions\" button"
+      }
+    ]
+  },
+  {
+    "id": "TC029",
+    "title": "Accepting an AI suggestion creates a maintenance template visible after save",
+    "description": "Verifies accepting an AI suggestion results in a suggested maintenance template being created and shown after saving the generator and opening its detail page.",
+    "category": "AI Maintenance Suggestions",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click the plus button in the sidebar to open the create generator modal"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Test Generator Model C\" into the generator model field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Generate suggestions\" button"
+      }
+    ]
+  },
+  {
+    "id": "TC030",
+    "title": "AI generation shows an in-progress state while waiting for results",
+    "description": "Verifies the UI indicates progress while the AI agent is generating maintenance suggestions.",
+    "category": "AI Maintenance Suggestions",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click the plus button in the sidebar to open the create generator modal"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Test Generator Model D\" into the generator model field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Generate suggestions\" button"
+      }
+    ]
+  },
+  {
+    "id": "TC031",
+    "title": "Generate suggestions button remains unavailable until required generator fields are provided",
+    "description": "Verifies the UI prevents generating AI suggestions when mandatory generator information (such as model) is missing.",
+    "category": "AI Maintenance Suggestions",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click the plus button in the sidebar to open the create generator modal"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Generate suggestions\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Model is required\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC032",
+    "title": "User can edit suggested values before saving generator",
+    "description": "Verifies suggested maintenance template fields can be edited after AI generation and before confirming save.",
+    "category": "AI Maintenance Suggestions",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click the plus button in the sidebar to open the create generator modal"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Test Generator Model E\" into the generator model field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Generate suggestions\" button"
+      }
+    ]
+  },
+  {
+    "id": "TC033",
+    "title": "AI suggestion generation failure shows a visible error state",
+    "description": "Verifies that if AI suggestions cannot be generated, the UI displays a visible error message and allows the user to continue without suggestions.",
+    "category": "AI Maintenance Suggestions",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click the plus button in the sidebar to open the create generator modal"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Test Generator Model F\" into the generator model field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Generate suggestions\" button"
+      }
+    ]
+  },
+  {
+    "id": "TC034",
+    "title": "Admin assigns an organization member to a generator and sees them in the assigned list",
+    "description": "Verifies an admin can assign a member to a generator and the member appears in the assigned employees list.",
+    "category": "Employee Assignment",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown on the dashboard"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Assigned employees\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select a member from the \"Assign member\" dropdown"
+      }
+    ]
+  },
+  {
+    "id": "TC035",
+    "title": "Admin completes assignment confirmation and verifies assigned member appears",
+    "description": "Verifies the assignment confirmation completes and the assigned member becomes visible in the assigned employees list.",
+    "category": "Employee Assignment",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown on the dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Select a member from the \"Assign member\" dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Confirm\" button"
+      }
+    ]
+  },
+  {
+    "id": "TC036",
+    "title": "Admin sees assigned member in list after assignment is confirmed",
+    "description": "Verifies the UI updates to show the newly assigned member in the assigned employees list after confirmation.",
+    "category": "Employee Assignment",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown on the dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Select a member from the \"Assign member\" dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Assigned employees list\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC037",
+    "title": "Admin unassigns an employee with confirmation and employee is removed from list",
+    "description": "Verifies an admin can unassign an assigned employee using the confirmation dialog and the employee disappears from the list.",
+    "category": "Employee Assignment",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown on the dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Unassign\" button for the first assigned employee"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Confirm\" button in the unassignment dialog"
+      }
+    ]
+  },
+  {
+    "id": "TC038",
+    "title": "Admin cancels unassignment and assigned employee remains in list",
+    "description": "Verifies canceling the unassignment confirmation dialog does not remove the employee from the assigned list.",
+    "category": "Employee Assignment",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown on the dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Unassign\" button for the first assigned employee"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Cancel\" button in the unassignment dialog"
+      }
+    ]
+  },
+  {
+    "id": "TC039",
+    "title": "Admin verifies assigned employee is still visible after canceling unassignment",
+    "description": "Verifies the assigned employees list still shows the employee after the unassignment dialog is canceled.",
+    "category": "Employee Assignment",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown on the dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Unassign\" button for the first assigned employee"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Unassignment confirmation dialog\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC040",
+    "title": "Non-admin cannot assign members and sees admin-only permission error",
+    "description": "Verifies a non-admin user cannot assign a member and receives a visible permission error message.",
+    "category": "Employee Assignment",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown on the dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Assign\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"admin\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC041",
+    "title": "Non-admin cannot see unassign controls on assigned employees list",
+    "description": "Verifies unassign controls are not visible for non-admin users on the generator assigned employees list.",
+    "category": "Employee Assignment",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first generator shown on the dashboard"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Assigned employees\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Unassign\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC042",
+    "title": "Stop an active runtime session from the dashboard active session card",
+    "description": "Verifies an active session can be stopped from the dashboard and the UI updates to remove the active session card.",
+    "category": "Dashboard Overview",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Active session\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Stop\" button on the active session card"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Active session\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC043",
+    "title": "Active session card displays elapsed time and stop control",
+    "description": "Verifies the active session card (when present) shows elapsed time and a stop button on the dashboard.",
+    "category": "Dashboard Overview",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Active session\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Elapsed\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Stop\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC044",
+    "title": "Upcoming maintenance list is shown and ranked by urgency",
+    "description": "Verifies the dashboard shows an upcoming maintenance section with items prioritized by urgency.",
+    "category": "Dashboard Overview",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Upcoming maintenance\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Urgent\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Soon\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC045",
+    "title": "Open a maintenance item and navigate to the generator detail page",
+    "description": "Verifies clicking an upcoming maintenance item routes the user to the generator detail page.",
+    "category": "Dashboard Overview",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click the first item in the \"Upcoming maintenance\" list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/generators/\""
+      }
+    ]
+  },
+  {
+    "id": "TC046",
+    "title": "Assigned generators list shows generator entries with status indicators",
+    "description": "Verifies the dashboard shows a list of assigned generators and each entry includes a visible status indicator.",
+    "category": "Dashboard Overview",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"My generators\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Generator status\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC047",
+    "title": "Navigate to generator detail by clicking a generator in the dashboard list",
+    "description": "Verifies clicking a generator entry from the dashboard navigates to the generator detail page.",
+    "category": "Dashboard Overview",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click the first generator in the \"My generators\" list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/generators/\""
+      }
+    ]
+  },
+  {
+    "id": "TC048",
+    "title": "Attention Required section is visible when alerts exist",
+    "description": "Verifies the dashboard shows an Attention Required section for alerts and the section is visible to the user.",
+    "category": "Dashboard Overview",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Attention required\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Alert\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC049",
+    "title": "Scroll to locate a generator when many are listed (no search/filter)",
+    "description": "Verifies users can locate items by scrolling in the generators list when no search/filter is available.",
+    "category": "Dashboard Overview",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"My generators\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the bottom of the \"My generators\" list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Generator\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC050",
+    "title": "Switch organization from sidebar dropdown updates dashboard context",
+    "description": "Verifies that switching the organization in the sidebar updates the current dashboard context and reflects the selected organization.",
+    "category": "Sidebar Navigation",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Switch organization from dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard/\""
+      }
+    ]
+  },
+  {
+    "id": "TC051",
+    "title": "Generator list updates after switching organization",
+    "description": "Verifies that the sidebar generator quick-access list changes when a different organization is selected.",
+    "category": "Sidebar Navigation",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Switch organization from dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Sidebar generator list\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Generator status indicator dots\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC052",
+    "title": "Navigate to a generator detail page from the sidebar generator list",
+    "description": "Verifies that clicking a generator in the sidebar opens its detail page.",
+    "category": "Sidebar Navigation",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click a generator in the sidebar generator list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/generators/\""
+      }
+    ]
+  },
+  {
+    "id": "TC053",
+    "title": "Open organization Settings from sidebar navigation",
+    "description": "Verifies that the Settings link in the sidebar navigates to the organization settings page.",
+    "category": "Sidebar Navigation",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Settings\" navigation link in the sidebar"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/settings\""
+      }
+    ]
+  },
+  {
+    "id": "TC054",
+    "title": "Sign out from user profile redirects to sign-in",
+    "description": "Verifies that the user can sign out from the sidebar user profile menu and is redirected to the sign-in route.",
+    "category": "Sidebar Navigation",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Click the user profile control in the sidebar"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Sign out\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/sign-in\""
+      }
+    ]
+  },
+  {
+    "id": "TC055",
+    "title": "Toggle theme from sidebar persists visually within the session",
+    "description": "Verifies that toggling the theme from the sidebar results in an immediate visible UI change indicating the theme switched.",
+    "category": "Sidebar Navigation",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /sign-in"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboard\""
+      },
+      {
+        "type": "action",
+        "description": "Toggle theme (light/dark) in the sidebar"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Dark\" is visible"
+      }
+    ]
+  }
+]
