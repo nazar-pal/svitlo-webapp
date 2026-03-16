@@ -31267,3 +31267,18 @@
 {"timestamp":"2026-03-16T02:33:13.177Z","level":"info","message":"Tunnel has been closed."}
 {"timestamp":"2026-03-16T02:33:13.177Z","level":"info","message":"HTTP proxy stopped"}
 {"timestamp":"2026-03-16T02:44:55.321Z","level":"info","message":"GET /modification/test?project_path=/Users/nazar/GitHub/svitlo-webapp&project_name=svitlo-webapp&test_id=2fdf5cc0-bdd6-44ba-9664-7ee3ed9941ca&test_case_id=TC011&mcp_port=62567&context=null&mode=execution&original_port=3000 200 4ms"}
+{"timestamp":"2026-03-16T02:50:59.487Z","level":"error","message":"checkPortListening tcp error: 3000 localhost\nAggregateError"}
+{"timestamp":"2026-03-16T02:50:59.990Z","level":"error","message":"checkPortListening tcp error: 3000 localhost\nAggregateError"}
+{"timestamp":"2026-03-16T02:51:00.491Z","level":"error","message":"checkPortListening tcp error: 3000 localhost\nAggregateError"}
+{"timestamp":"2026-03-16T02:51:00.993Z","level":"error","message":"checkPortListening tcp error: 3000 localhost\nAggregateError"}
+{"timestamp":"2026-03-16T02:51:01.495Z","level":"error","message":"checkPortListening tcp error: 3000 localhost\nAggregateError"}
+{"timestamp":"2026-03-16T02:51:01.995Z","level":"error","message":"checkPortListening tcp error: 3000 localhost\nAggregateError"}
+{"timestamp":"2026-03-16T02:51:02.498Z","level":"error","message":"checkPortListening tcp error: 3000 localhost\nAggregateError"}
+{"timestamp":"2026-03-16T02:51:03.001Z","level":"error","message":"checkPortListening tcp error: 3000 localhost\nAggregateError"}
+{"timestamp":"2026-03-16T02:51:03.503Z","level":"error","message":"checkPortListening tcp error: 3000 localhost\nAggregateError"}
+{"timestamp":"2026-03-16T02:51:04.005Z","level":"error","message":"checkPortListening tcp error: 3000 localhost\nAggregateError"}
+{"timestamp":"2026-03-16T02:51:04.508Z","level":"error","message":"checkPortListening tcp error: 3000 localhost\nAggregateError"}
+{"timestamp":"2026-03-16T02:51:05.009Z","level":"error","message":"checkPortListening tcp error: 3000 localhost\nAggregateError"}
+{"timestamp":"2026-03-16T02:51:05.511Z","level":"error","message":"checkPortListening tcp error: 3000 localhost\nAggregateError"}
+{"timestamp":"2026-03-16T02:51:06.013Z","level":"error","message":"checkPortListening tcp error: 3000 localhost\nAggregateError"}
+{"timestamp":"2026-03-16T02:51:06.515Z","level":"error","message":"checkPortListening tcp error: 3000 localhost\nAggregateError"}
