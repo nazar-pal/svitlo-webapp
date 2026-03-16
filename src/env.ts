@@ -2,12 +2,17 @@ import { createEnv } from '@t3-oss/env-core'
 import { z } from 'zod'
 
 export const env = createEnv({
+  onValidationError: issues => {
+    throw new Error(
+      `Invalid environment variables: ${JSON.stringify(issues, null, 2)}`
+    )
+  },
   server: {
     DATABASE_URL: z.string().trim().min(1),
     POWERSYNC_URL: z.url(),
     POWERSYNC_PRIVATE_KEY: z.string().trim().min(32),
     BETTER_AUTH_SECRET: z.string().trim().min(32),
-    BETTER_AUTH_URL: z.string().url().optional(),
+    BETTER_AUTH_URL: z.url().optional(),
     GOOGLE_GENERATIVE_AI_API_KEY: z.string().trim().min(1)
   },
 
