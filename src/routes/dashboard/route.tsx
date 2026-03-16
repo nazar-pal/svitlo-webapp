@@ -1,10 +1,16 @@
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { useEffect } from 'react'
+import {
+  createFileRoute,
+  Outlet,
+  redirect,
+  useNavigate
+} from '@tanstack/react-router'
 import { Button, Chip, Drawer, useOverlayState } from '@heroui/react'
 import { Menu } from 'lucide-react'
 import { z } from 'zod'
 
 import { authClient } from '@/lib/auth/auth-client'
-import { getServerSession } from '@/lib/auth/get-session'
+import { hasClientSession } from '@/lib/auth/get-client-session'
 import { PowerSyncProvider } from '@/lib/powersync/context'
 import SidebarContent from './-sidebar/SidebarContent'
 
@@ -15,16 +21,20 @@ const dashboardSearchSchema = z.object({
 export const Route = createFileRoute('/dashboard')({
   validateSearch: dashboardSearchSchema,
   ssr: false,
-  beforeLoad: async () => {
-    const session = await getServerSession()
-    if (!session) throw redirect({ to: '/sign-in' })
+  beforeLoad: () => {
+    if (!hasClientSession()) throw redirect({ to: '/sign-in' })
   },
   component: DashboardLayout
 })
 
 function DashboardLayout() {
-  const { data: session } = authClient.useSession()
+  const { data: session, isPending } = authClient.useSession()
+  const navigate = useNavigate()
   const drawerState = useOverlayState()
+
+  useEffect(() => {
+    if (!isPending && !session) void navigate({ to: '/sign-in' })
+  }, [isPending, session, navigate])
 
   return (
     <PowerSyncProvider userId={session?.user?.id ?? null}>

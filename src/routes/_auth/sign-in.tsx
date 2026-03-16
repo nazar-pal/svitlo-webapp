@@ -1,12 +1,11 @@
 import { createFileRoute, Link, redirect } from '@tanstack/react-router'
 import { Card, Chip } from '@heroui/react'
 import SignInForm from '@/components/SignInForm'
-import { getServerSession } from '@/lib/auth/get-session'
+import { hasClientSession } from '@/lib/auth/get-client-session'
 
 export const Route = createFileRoute('/_auth/sign-in')({
-  beforeLoad: async () => {
-    const session = await getServerSession()
-    if (session) throw redirect({ to: '/dashboard' })
+  beforeLoad: () => {
+    if (hasClientSession()) throw redirect({ to: '/dashboard' })
   },
   component: SignIn
 })

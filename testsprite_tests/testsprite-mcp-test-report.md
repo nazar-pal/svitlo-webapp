@@ -384,6 +384,7 @@
 4. **Auth timing (TC022):** Sign-in redirect didn't complete in time. Additionally, the tested scenario (sync error preventing status computation) is architecturally impossible in this local-first app — PowerSync always has local data available for status computation.
 
 **Confirmed working (initially failed, passed on re-run):**
+
 - TC010: Session stop + history update — works correctly, initial failure was dev server instability
 - TC017: Attention required alert navigation — works correctly
 

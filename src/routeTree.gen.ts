@@ -27,83 +27,82 @@ import { Route as DashboardOrganizationIdGeneratorsGeneratorIdIndexRouteImport }
 
 const MarketingRoute = MarketingRouteImport.update({
   id: '/_marketing',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRouteImport
 } as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRouteImport
 } as any)
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRouteImport
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => DashboardRouteRoute,
+  getParentRoute: () => DashboardRouteRoute
 } as any)
 const MarketingIndexRoute = MarketingIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => MarketingRoute,
+  getParentRoute: () => MarketingRoute
 } as any)
 const ApiSplatRoute = ApiSplatRouteImport.update({
   id: '/api/$',
   path: '/api/$',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRouteImport
 } as any)
 const AuthSignInRoute = AuthSignInRouteImport.update({
   id: '/sign-in',
   path: '/sign-in',
-  getParentRoute: () => AuthRoute,
+  getParentRoute: () => AuthRoute
 } as any)
 const DashboardOrganizationIdRouteRoute =
   DashboardOrganizationIdRouteRouteImport.update({
     id: '/$organizationId',
     path: '/$organizationId',
-    getParentRoute: () => DashboardRouteRoute,
+    getParentRoute: () => DashboardRouteRoute
   } as any)
 const DashboardOrganizationIdIndexRoute =
   DashboardOrganizationIdIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+    getParentRoute: () => DashboardOrganizationIdRouteRoute
   } as any)
 const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
   id: '/api/rpc/$',
   path: '/api/rpc/$',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRouteImport
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRouteImport
 } as any)
 const DashboardOrganizationIdGeneratorsRouteRoute =
   DashboardOrganizationIdGeneratorsRouteRouteImport.update({
     id: '/generators',
     path: '/generators',
-    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+    getParentRoute: () => DashboardOrganizationIdRouteRoute
   } as any)
 const DashboardOrganizationIdSettingsIndexRoute =
   DashboardOrganizationIdSettingsIndexRouteImport.update({
     id: '/settings/',
     path: '/settings/',
-    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+    getParentRoute: () => DashboardOrganizationIdRouteRoute
   } as any)
 const DashboardOrganizationIdGeneratorsGeneratorIdRouteRoute =
   DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteImport.update({
     id: '/$generatorId',
     path: '/$generatorId',
-    getParentRoute: () => DashboardOrganizationIdGeneratorsRouteRoute,
+    getParentRoute: () => DashboardOrganizationIdGeneratorsRouteRoute
   } as any)
 const DashboardOrganizationIdGeneratorsGeneratorIdIndexRoute =
   DashboardOrganizationIdGeneratorsGeneratorIdIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () =>
-      DashboardOrganizationIdGeneratorsGeneratorIdRouteRoute,
+    getParentRoute: () => DashboardOrganizationIdGeneratorsGeneratorIdRouteRoute
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -324,12 +323,12 @@ interface DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteChildren {
 const DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteChildren: DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteChildren =
   {
     DashboardOrganizationIdGeneratorsGeneratorIdIndexRoute:
-      DashboardOrganizationIdGeneratorsGeneratorIdIndexRoute,
+      DashboardOrganizationIdGeneratorsGeneratorIdIndexRoute
   }
 
 const DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteWithChildren =
   DashboardOrganizationIdGeneratorsGeneratorIdRouteRoute._addFileChildren(
-    DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteChildren,
+    DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteChildren
   )
 
 interface DashboardOrganizationIdGeneratorsRouteRouteChildren {
@@ -339,12 +338,12 @@ interface DashboardOrganizationIdGeneratorsRouteRouteChildren {
 const DashboardOrganizationIdGeneratorsRouteRouteChildren: DashboardOrganizationIdGeneratorsRouteRouteChildren =
   {
     DashboardOrganizationIdGeneratorsGeneratorIdRouteRoute:
-      DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteWithChildren,
+      DashboardOrganizationIdGeneratorsGeneratorIdRouteRouteWithChildren
   }
 
 const DashboardOrganizationIdGeneratorsRouteRouteWithChildren =
   DashboardOrganizationIdGeneratorsRouteRoute._addFileChildren(
-    DashboardOrganizationIdGeneratorsRouteRouteChildren,
+    DashboardOrganizationIdGeneratorsRouteRouteChildren
   )
 
 interface DashboardOrganizationIdRouteRouteChildren {
@@ -359,12 +358,12 @@ const DashboardOrganizationIdRouteRouteChildren: DashboardOrganizationIdRouteRou
       DashboardOrganizationIdGeneratorsRouteRouteWithChildren,
     DashboardOrganizationIdIndexRoute: DashboardOrganizationIdIndexRoute,
     DashboardOrganizationIdSettingsIndexRoute:
-      DashboardOrganizationIdSettingsIndexRoute,
+      DashboardOrganizationIdSettingsIndexRoute
   }
 
 const DashboardOrganizationIdRouteRouteWithChildren =
   DashboardOrganizationIdRouteRoute._addFileChildren(
-    DashboardOrganizationIdRouteRouteChildren,
+    DashboardOrganizationIdRouteRouteChildren
   )
 
 interface DashboardRouteRouteChildren {
@@ -375,11 +374,11 @@ interface DashboardRouteRouteChildren {
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardOrganizationIdRouteRoute:
     DashboardOrganizationIdRouteRouteWithChildren,
-  DashboardIndexRoute: DashboardIndexRoute,
+  DashboardIndexRoute: DashboardIndexRoute
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
-  DashboardRouteRouteChildren,
+  DashboardRouteRouteChildren
 )
 
 interface AuthRouteChildren {
@@ -387,7 +386,7 @@ interface AuthRouteChildren {
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
-  AuthSignInRoute: AuthSignInRoute,
+  AuthSignInRoute: AuthSignInRoute
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -397,11 +396,11 @@ interface MarketingRouteChildren {
 }
 
 const MarketingRouteChildren: MarketingRouteChildren = {
-  MarketingIndexRoute: MarketingIndexRoute,
+  MarketingIndexRoute: MarketingIndexRoute
 }
 
 const MarketingRouteWithChildren = MarketingRoute._addFileChildren(
-  MarketingRouteChildren,
+  MarketingRouteChildren
 )
 
 const rootRouteChildren: RootRouteChildren = {
@@ -410,7 +409,7 @@ const rootRouteChildren: RootRouteChildren = {
   MarketingRoute: MarketingRouteWithChildren,
   ApiSplatRoute: ApiSplatRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
-  ApiRpcSplatRoute: ApiRpcSplatRoute,
+  ApiRpcSplatRoute: ApiRpcSplatRoute
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
