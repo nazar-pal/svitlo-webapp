@@ -1,257 +1,144 @@
-Welcome to your new TanStack Start app!
+# Svitlo
 
-# Getting Started
+**Power Generator Maintenance Tracker — Built for the [TestSprite Hackathon](https://testsprite.com)**
 
-To run this application:
+Svitlo is a local-first web application for tracking the usage and maintenance of power generators. It helps individuals and businesses know exactly when a generator needs maintenance, whether it has been running too long, and who last operated it.
 
-```bash
-npm install
-npm run dev
-```
+### Demo
 
-# Building For Production
+[![Watch the demo](https://img.youtube.com/vi/KrBQzb6jr68/maxresdefault.jpg)](https://youtu.be/KrBQzb6jr68)
 
-To build this application for production:
+---
 
-```bash
-npm run build
-```
+## Why Svitlo?
 
-## Testing
+Power generators are critical infrastructure — especially in regions with unreliable electricity. But most people manage them with guesswork: sticky notes, memory, or nothing at all. Svitlo replaces that with a structured system that works even when the internet doesn't.
 
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+---
 
-```bash
-npm run test
-```
+## Features
 
-## Styling
+### Generator Management
+- **Start/Stop Session Tracking** — Log every generator run with timestamps and operator identity
+- **Automatic State Detection** — Generators are derived as *running*, *resting*, or *available* based on session history
+- **Consecutive Run Monitoring** — Configurable run-hour limits with warning thresholds to prevent overuse
+- **Enforced Rest Periods** — Generators that hit their run limit enter a mandatory rest state
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+### Maintenance
+- **Maintenance Templates** — Define recurring tasks triggered by run hours, calendar days, or whichever comes first
+- **Due Date Computation** — All maintenance status is computed in real-time from the maintenance log
+- **AI-Suggested Maintenance Plans** — Powered by Google Gemini, researches manufacturer specs and suggests maintenance schedules based on generator model and type
 
-### Removing Tailwind CSS
+### Organizations & Teams
+- **Multi-Organization Support** — Create and manage multiple organizations; be an admin in some and an employee in others
+- **Role-Based Access** — Administrators manage generators and templates; employees operate assigned generators
+- **Employee Invitations** — Invite team members by email; invitations persist until accepted or declined
+- **Generator Assignments** — Assign specific employees to specific generators for accountability
 
-If you prefer not to use Tailwind CSS:
+### Offline-First
+- **Works Without Internet** — All reads and writes happen against a local SQLite database on the device
+- **Background Sync** — Data synchronizes to the server automatically when connectivity is available
+- **No Loading Spinners** — The UI is always instant because it reads from local data
+- **Resilient by Design** — Start generators, log maintenance, and view history even in areas with no connectivity
 
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Uninstall the packages: `npm install @tailwindcss/vite tailwindcss -D`
+---
 
-## Linting & Formatting
+## Tech Stack
 
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
+| Layer | Technology |
+|---|---|
+| **Framework** | [TanStack Start](https://tanstack.com/start) + [React 19](https://react.dev) |
+| **Routing** | [TanStack Router](https://tanstack.com/router) (file-based, type-safe) |
+| **Data Fetching** | [TanStack Query](https://tanstack.com/query) + [oRPC](https://orpc.dev) (type-safe RPC) |
+| **Local-First Sync** | [PowerSync](https://www.powersync.com) + SQLite (via wa-sqlite) |
+| **Database** | [Neon Serverless Postgres](https://neon.tech) + [Drizzle ORM](https://orm.drizzle.team) |
+| **Authentication** | [Better Auth](https://www.better-auth.com) (email/password + Google OAuth) |
+| **UI Components** | [HeroUI](https://heroui.com) + [Tailwind CSS 4](https://tailwindcss.com) |
+| **AI** | [Mastra](https://mastra.ai) + [Google Gemini 2.5 Flash](https://ai.google.dev) |
+| **Validation** | [Zod](https://zod.dev) (3-layer: client, mutation, database) |
+| **State** | [Zustand](https://zustand.docs.pmnd.rs) |
+| **Deployment** | [Vercel](https://vercel.com) |
 
-```bash
-npm run lint
-npm run format
-npm run check
-```
+---
 
-## Setting up Neon
+## Local-First Architecture
 
-When running the `dev` command, the `@neondatabase/vite-plugin-postgres` will identify there is not a database setup. It will then create and seed a claimable database.
+Svitlo uses a 3-layer validation architecture designed for offline-first correctness:
 
-It is the same process as [Neon Launchpad](https://neon.new).
+1. **Client Zod Schemas** — Field-level constraints for immediate UX feedback
+2. **Client Mutations** — Authorization checks, foreign key existence, cross-table business rules
+3. **PostgreSQL Constraints + Triggers** — Final safety net enforced even if client validation is bypassed
 
-> [!IMPORTANT]  
-> Claimable databases expire in 72 hours.
+All generator state (running/resting/available), lifetime hours, and maintenance due dates are **computed at query time** — never stored. This keeps the local and server databases consistent without complex sync logic.
 
-## T3Env
+---
 
-- You can use T3Env to add type safety to your environment variables.
-- Add Environment variables to the `src/env.mjs` file.
-- Use the environment variables in your code.
+## Getting Started
 
-### Usage
+### Prerequisites
 
-```ts
-import { env } from '#/env'
+- [Bun](https://bun.sh) (or Node.js)
+- A [Neon](https://neon.tech) PostgreSQL database
+- A [PowerSync](https://www.powersync.com) account for local-first sync
 
-console.log(env.VITE_APP_TITLE)
-```
-
-## Setting up Better Auth
-
-1. Generate and set the `BETTER_AUTH_SECRET` environment variable in your `.env.local`:
-
-   ```bash
-   npx -y @better-auth/cli secret
-   ```
-
-2. Visit the [Better Auth documentation](https://www.better-auth.com) to unlock the full potential of authentication in your app.
-
-### Adding a Database (Optional)
-
-Better Auth can work in stateless mode, but to persist user data, add a database:
-
-```typescript
-// src/lib/auth.ts
-import { betterAuth } from 'better-auth'
-import { Pool } from 'pg'
-
-export const auth = betterAuth({
-  database: new Pool({
-    connectionString: process.env.DATABASE_URL
-  })
-  // ... rest of config
-})
-```
-
-Then run migrations:
+### Installation
 
 ```bash
-npx -y @better-auth/cli migrate
+bun install
 ```
 
-## Routing
+### Environment Variables
 
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
+Create a `.env.local` file:
 
-### Adding A Route
-
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from '@tanstack/react-router'
+```env
+DATABASE_URL=your_neon_connection_string
+POWERSYNC_URL=your_powersync_instance_url
+POWERSYNC_PRIVATE_KEY=your_powersync_key
+BETTER_AUTH_SECRET=your_auth_secret
+GOOGLE_GENERATIVE_AI_API_KEY=your_gemini_api_key
 ```
 
-Then anywhere in your JSX you can use it like so:
+### Development
 
-```tsx
-<Link to="/about">About</Link>
+```bash
+bun run dev
 ```
 
-This will create a link that will navigate to the `/about` route.
+### Build
 
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' }
-    ]
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  )
-})
+```bash
+bun run build
 ```
 
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
+### Testing
 
-## Server Functions
-
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from '@tanstack/react-start'
-
-const getServerTime = createServerFn({
-  method: 'GET'
-}).handler(async () => {
-  return new Date().toISOString()
-})
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-
-  return <div>Server time: {time}</div>
-}
+```bash
+bun run test
 ```
 
-## API Routes
+### Linting & Type Checking
 
-You can create API routes by using the `server` property in your route definitions:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
-
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' })
-    }
-  }
-})
+```bash
+bun run lint
+bun run typecheck
 ```
 
-## Data Fetching
+---
 
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
+## Test Accounts
 
-For example:
+The following accounts are available for testing the application. All accounts share the same password: `TestOne1$`
 
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
+| Email |
+|---|
+| test-nazar@gmail.com |
+| test-maria@gmail.com |
+| test-andy@gmail.com |
+| test-leo@gmail.com |
 
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent
-})
+---
 
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map(person => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
-```
+## License
 
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+MIT
