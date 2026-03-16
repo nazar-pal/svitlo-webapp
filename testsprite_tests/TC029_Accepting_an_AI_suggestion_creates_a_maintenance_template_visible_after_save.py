@@ -33,10 +33,10 @@ async def run_test():
         # -> Navigate to http://localhost:3000
         await page.goto("http://localhost:3000")
         
-        # -> Navigate to /sign-in using the explicit navigation step.
+        # -> Navigate to /sign-in (http://localhost:3000/sign-in) so the login form can be filled.
         await page.goto("http://localhost:3000/sign-in")
         
-        # -> Fill the email field (index 270) with the provided email, then fill password (index 271), then click the Sign In button (index 272).
+        # -> Type the email into the Email field (index 268), type the password into the Password field (index 269), then click the Sign In button (index 270).
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/div/input').nth(0)
@@ -52,13 +52,13 @@ async def run_test():
         elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/button').nth(0)
         await asyncio.sleep(3); await elem.click()
         
-        # -> Click the plus button in the sidebar to open the create generator modal (use interactive element index 502).
+        # -> Click the plus button in the sidebar to open the create generator modal (Create generator button).
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div[2]/aside/div/div[4]/div/button').nth(0)
         await asyncio.sleep(3); await elem.click()
         
-        # -> Fill the Model field with 'Test Generator Model C' (index 661) and click the Next button to proceed (index 672).
+        # -> Fill the Model input with 'Test Generator Model C' (index 722) and click 'Next' (index 733) to proceed to the suggestions step.
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[3]/div/section/form/div/div/div/div[3]/input').nth(0)
@@ -69,18 +69,24 @@ async def run_test():
         elem = frame.locator('xpath=/html/body/div[3]/div/section/form/div[2]/button').nth(0)
         await asyncio.sleep(3); await elem.click()
         
-        # -> Fill the required Title field with 'Test Generator C' then click the Next button to advance to the suggestions step.
+        # -> Click the 'Next' button inside the Create Generator modal to proceed to the Suggestions step and reveal the 'Generate suggestions' control (if the modal remains on Basic Details, clicking Next should advance to Suggestions). After the page changes, locate and click the 'Generate suggestions' button.
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/div[3]/div/section/form/div[2]/button').nth(0)
+        await asyncio.sleep(3); await elem.click()
+        
+        # -> Fill the Title field (index 719) with 'Test Generator Title' then click the Next button (index 733) to advance to the Suggestions step so the 'Generate suggestions' control can be revealed.
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div[3]/div/section/form/div/div/div/div[2]/input').nth(0)
-        await asyncio.sleep(3); await elem.fill('Test Generator C')
+        await asyncio.sleep(3); await elem.fill('Test Generator Title')
         
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div[3]/div/section/form/div[2]/button').nth(0)
         await asyncio.sleep(3); await elem.click()
         
-        # -> Click the 'Auto-fill with AI' (Generate suggestions) button in the Create Generator modal (interactive element index 849).
+        # -> Click the 'Auto-fill with AI' button (index 954) to generate suggestions, then wait up to 5 seconds for the suggestions UI to appear.
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div[3]/div/section/form/div/div/button').nth(0)

@@ -33,13 +33,10 @@ async def run_test():
         # -> Navigate to http://localhost:3000
         await page.goto("http://localhost:3000")
         
-        # -> Click the "Get Started Free" button to reach the sign-in / registration flow (prefer natural navigation over direct URL navigation).
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/main/section/div[2]/div[4]/a/button').nth(0)
-        await asyncio.sleep(3); await elem.click()
+        # -> Navigate to /sign-in (use explicit navigate to http://localhost:3000/sign-in as the test step requires).
+        await page.goto("http://localhost:3000/sign-in")
         
-        # -> Enter the provided email and password into the sign-in form, then click the Sign In button to attempt login (proceed to dashboard).
+        # -> Fill the email field (index 268) then the password field (index 269) and click the Sign In button (index 270).
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/div/input').nth(0)
@@ -53,24 +50,6 @@ async def run_test():
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/button').nth(0)
-        await asyncio.sleep(3); await elem.click()
-        
-        # -> Click on the first generator shown on the organization dashboard to open its generator detail page (click element index 565).
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/div[2]/main/div/div/section/div/div/div/div/a').nth(0)
-        await asyncio.sleep(3); await elem.click()
-        
-        # -> Click the 'Dashboard' link in the left sidebar to return to the dashboard so the generator list can be reopened (then open the first generator and access the Maintenance tab).
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/div/aside/div/div[3]/a').nth(0)
-        await asyncio.sleep(3); await elem.click()
-        
-        # -> Attempt to re-render the dashboard by clicking the 'Dashboard' link in the left sidebar again to reveal the generator list (click element index 937).
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/div/aside/div/div[3]/a[2]').nth(0)
         await asyncio.sleep(3); await elem.click()
         
         # --> Assertions to verify final state

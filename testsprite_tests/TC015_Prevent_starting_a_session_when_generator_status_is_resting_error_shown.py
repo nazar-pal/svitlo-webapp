@@ -30,75 +30,35 @@ async def run_test():
         page = await context.new_page()
 
         # Interact with the page elements to simulate user flow
- 
         # -> Navigate to http://localhost:3000
         await page.goto("http://localhost:3000")
-        # -> Click the 'Get Started Free' button (index 16) to enter the authentication / onboarding flow.
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/main/section/div[2]/div[4]/a/button').nth(0)
-        await asyncio.sleep(3); await elem.click()
-        # -> Fill the Email and Password fields with the provided credentials and submit the Sign In form to log in.
+        
+        # -> Navigate to /sign-in using explicit navigation as required by the test step.
+        await page.goto("http://localhost:3000/sign-in")
+        
+        # -> Enter the provided email and password into the sign-in form and click the Sign In button to authenticate (use email nanchick2000@gmail.com and password Qwerty1234567$).
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/div/input').nth(0)
         await asyncio.sleep(3); await elem.fill('nanchick2000@gmail.com')
+        
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/div[2]/input').nth(0)
         await asyncio.sleep(3); await elem.fill('Qwerty1234567$')
+        
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/button').nth(0)
         await asyncio.sleep(3); await elem.click()
-        # -> Retry signing in by clicking the Sign In button again to attempt login (index 327).
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/div[2]/div/div[2]/div/div/form/button').nth(0)
-        await asyncio.sleep(3); await elem.click()
-        # -> Return to the homepage by clicking 'Back to home' so the onboarding flow can be retried or an alternative path can be used (click element index 330).
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/div[2]/div/p/a').nth(0)
-        await asyncio.sleep(3); await elem.click()
-        # -> Click the 'Get Started Free' button (index 489) to re-open the authentication/onboarding flow and look for an alternative auth path (Sign up or other), avoiding repeating the same sign-in click that already failed.
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/main/section/div[2]/div[4]/a/button').nth(0)
-        await asyncio.sleep(3); await elem.click()
-        # -> Click the 'Sign Up' tab to try an alternative auth flow (index 730) so login can proceed via another path.
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/div/div/div/div[2]').nth(0)
-        await asyncio.sleep(3); await elem.click()
-        # -> Fill the Sign Up form with the provided credentials (and a name) and submit the Sign Up form to create an account (use inputs indexes 769, 736, 740 and click index 741).
-        frame = context.pages[-1]
-        # Input text
-        elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/div/input').nth(0)
-        await asyncio.sleep(3); await elem.fill('Nanchick')
-        frame = context.pages[-1]
-        # Input text
-        elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/div[2]/input').nth(0)
-        await asyncio.sleep(3); await elem.fill('nanchick2000@gmail.com')
-        frame = context.pages[-1]
-        # Input text
-        elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/div[3]/input').nth(0)
-        await asyncio.sleep(3); await elem.fill('Qwerty1234567$')
-        # -> Click the 'Sign Up' button to submit the sign-up form and create the account (index 741).
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/button').nth(0)
-        await asyncio.sleep(3); await elem.click()
-        # -> Retry the Sign Up submission by clicking the 'Sign Up' button (index 741). If the network error persists, evaluate the error and then try an alternate path (e.g., 'Back to home') or report failure.
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/div[2]/div/div[2]/div/div/form/button').nth(0)
-        await asyncio.sleep(3); await elem.click()
+        
         # --> Assertions to verify final state
         frame = context.pages[-1]
-        assert await frame.locator("xpath=//*[contains(., 'Generator is Resting')]").nth(0).is_visible(), "Expected 'Generator is Resting' to be visible"
         current_url = await frame.evaluate("() => window.location.href")
-        assert '/session' in current_url
+        assert '/dashboard' in current_url
+        assert await frame.locator("xpath=//*[contains(., 'Resting')]").nth(0).is_visible(), "Expected 'Resting' to be visible"
+        assert await frame.locator("xpath=//*[contains(., 'Cannot start session while resting')]").nth(0).is_visible(), "Expected 'Cannot start session while resting' to be visible"
+        assert not await frame.locator("xpath=//*[contains(., 'Elapsed time')]").nth(0).is_visible(), "Expected 'Elapsed time' to not be visible"
         await asyncio.sleep(5)
 
     finally:

@@ -33,13 +33,10 @@ async def run_test():
         # -> Navigate to http://localhost:3000
         await page.goto("http://localhost:3000")
         
-        # -> Click the 'Get Started Free' button to reach the sign-in / sign-up page.
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/main/section/div[2]/div[4]/a/button').nth(0)
-        await asyncio.sleep(3); await elem.click()
+        # -> Navigate to /sign-in
+        await page.goto("http://localhost:3000/sign-in")
         
-        # -> Fill the Email and Password fields and click the 'Sign In' button to authenticate.
+        # -> Type the email into the Email input (index 268).
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/div/input').nth(0)

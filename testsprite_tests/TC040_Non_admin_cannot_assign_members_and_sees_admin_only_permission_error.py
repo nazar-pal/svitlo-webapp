@@ -33,10 +33,13 @@ async def run_test():
         # -> Navigate to http://localhost:3000
         await page.goto("http://localhost:3000")
         
-        # -> Navigate to /sign-in (http://localhost:3000/sign-in) to begin login with provided test credentials.
-        await page.goto("http://localhost:3000/sign-in")
+        # -> Click the 'Get Started Free' button (expected to navigate to sign-in).
+        frame = context.pages[-1]
+        # Click element
+        elem = frame.locator('xpath=/html/body/main/section/div[2]/div[4]/a/button').nth(0)
+        await asyncio.sleep(3); await elem.click()
         
-        # -> Fill the email and password fields with the provided test credentials and click the Sign In button to attempt login (input email into index 271, password into index 272, click index 273).
+        # -> Fill the email and password fields and click the 'Sign In' button (submit the form).
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/div/input').nth(0)
@@ -50,24 +53,6 @@ async def run_test():
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/button').nth(0)
-        await asyncio.sleep(3); await elem.click()
-        
-        # -> Click the first generator shown on the dashboard (Backyard Generator) using interactive element index 552 to open its details.
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/div[2]/main/div/div/section/div/div/div/div/a').nth(0)
-        await asyncio.sleep(3); await elem.click()
-        
-        # -> Click the 'Assign' button in the Assigned Employees card to attempt assignment and trigger any permission error message (click element index 903). After the click, verify a visible permission error message (e.g., text mentioning 'admin' or 'permission') will be checked in the next step.
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/div[2]/main/div/div[2]/div/div[2]/div/div/button').nth(0)
-        await asyncio.sleep(3); await elem.click()
-        
-        # -> Click the 'Assign' button (index 912) to attempt assignment and trigger any permission error message so it can be verified.
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/div[2]/main/div/div[2]/div/div[2]/div/button').nth(0)
         await asyncio.sleep(3); await elem.click()
         
         # --> Assertions to verify final state

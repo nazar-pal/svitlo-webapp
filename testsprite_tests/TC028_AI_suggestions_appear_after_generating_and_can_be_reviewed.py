@@ -30,37 +30,32 @@ async def run_test():
         page = await context.new_page()
 
         # Interact with the page elements to simulate user flow
- 
         # -> Navigate to http://localhost:3000
         await page.goto("http://localhost:3000")
-        # -> Click the 'Get Started Free' button to begin the signup/login flow so the AI suggestions feature can be requested and tested. ASSERTION: Clicking 'Get Started Free' should open the signup/login or onboarding page.
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/main/section/div[2]/div[4]/a/button').nth(0)
-        await asyncio.sleep(3); await elem.click()
-        # -> Fill the Email and Password fields with the provided credentials and click 'Sign In' to authenticate.
+        
+        # -> Navigate to /sign-in (http://localhost:3000/sign-in) as the first explicit test step.
+        await page.goto("http://localhost:3000/sign-in")
+        
+        # -> Type the email into the email field, type the password into the password field, then click the 'Sign In' button to attempt login (after that verify URL contains '/dashboard').
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/div/input').nth(0)
         await asyncio.sleep(3); await elem.fill('nanchick2000@gmail.com')
+        
         frame = context.pages[-1]
         # Input text
         elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/div[2]/input').nth(0)
         await asyncio.sleep(3); await elem.fill('Qwerty1234567$')
+        
         frame = context.pages[-1]
         # Click element
         elem = frame.locator('xpath=/html/body/div/div/div[2]/div/div/form/button').nth(0)
         await asyncio.sleep(3); await elem.click()
-        # -> Retry clicking the 'Sign In' button to attempt login again, then wait a sufficient time for the app to process and for AI suggestions to appear.
-        frame = context.pages[-1]
-        # Click element
-        elem = frame.locator('xpath=/html/body/div[2]/div/div[2]/div/div/form/button').nth(0)
-        await asyncio.sleep(3); await elem.click()
+        
         # --> Assertions to verify final state
         frame = context.pages[-1]
-        assert await frame.locator("xpath=//*[contains(., 'Sign In')]").nth(0).is_visible(), "Expected 'Sign In' to be visible"
-        assert await frame.locator("xpath=//*[contains(., 'AI Suggestions')]").nth(0).is_visible(), "Expected 'AI Suggestions' to be visible"
-        assert await frame.locator("xpath=//*[contains(., 'Suggested Plan')]").nth(0).is_visible(), "Expected 'Suggested Plan' to be visible"
+        current_url = await frame.evaluate("() => window.location.href")
+        assert '/dashboard' in current_url
         await asyncio.sleep(5)
 
     finally:

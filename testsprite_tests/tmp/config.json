@@ -8,13 +8,22 @@
   "executionArgs": {
     "projectName": "svitlo-webapp",
     "projectPath": "/Users/nazar/GitHub/svitlo-webapp",
-    "testIds": [],
-    "additionalInstruction": "",
+    "testIds": [
+      "TC010",
+      "TC015",
+      "TC017",
+      "TC022",
+      "TC026",
+      "TC028",
+      "TC029",
+      "TC040"
+    ],
+    "additionalInstruction": "Re-run of previously failed tests. Server has been restarted and is healthy. For TC010, after clicking Stop wait at least 5 seconds for local-first DB update. For TC040, to test non-admin behavior you need a non-admin user account, not the org creator. For TC022, this is a local-first app so generator status is always computable from local data.",
     "serverMode": "development",
     "envs": {
       "API_KEY": "sk-user-MYJOph9V3EhonhTMaFO2ZhfwFgu0lxdB7WKQf6C7RXTYPhvnTteBUUQAnhUw2h3J-a6qMvcQCM6tTFLCHgU5gKkoh4jOEZMFkjyV3hwz9t_o3KR-ziPmFBg6Hxe3zJSWY1Q"
     }
   },
-  "serverPort": 62567,
-  "proxy": "http://f7c21cb8-79b9-4751-99d5-4438540d087f:Dw0j0ZqMJ4JtNxsKISaj9prQei1x9loJ@tun.testsprite.com:8080"
+  "serverPort": 60550,
+  "proxy": "http://45c9fdf4-78d8-4190-bb3d-59d558ae02a3:Pm4eCYL0H6mjmA25BgyAXZvMZbFDZ1LK@tun.testsprite.com:8080"
 }
